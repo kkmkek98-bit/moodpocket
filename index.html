@@ -1,0 +1,2143 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>MoodPocket (무드포켓)</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Jua&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;font-family:'Jua','Plus Jakarta Sans',sans-serif;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-primary":"#ffffff","surface-variant":"#e8dff3","primary-fixed":"#ffdad2","on-background":"#1e1927","outline":"#89726d","surface-container-high":"#eee4f9","secondary-fixed-dim":"#cebdff","on-primary-container":"#762612","error-container":"#ffdad6","inverse-surface":"#332e3d","secondary-container":"#ab8ffe","secondary-fixed":"#e8ddff","on-secondary-container":"#3f1e8c","surface-tint":"#9d422c","surface-dim":"#e0d6ea","tertiary":"#006c4e","surface-bright":"#fef7ff","surface":"#fef7ff","on-surface-variant":"#56423e","on-primary-fixed":"#3c0700","on-primary-fixed-variant":"#7e2c17","background":"#fef7ff","on-tertiary-fixed-variant":"#00513a","primary-fixed-dim":"#ffb4a2","inverse-on-surface":"#f7edff","inverse-primary":"#ffb4a2","tertiary-fixed-dim":"#62dcad","on-tertiary-fixed":"#002115","on-secondary":"#ffffff","error":"#ba1a1a","on-secondary-fixed-variant":"#4f319c","on-tertiary-container":"#004b35","on-error-container":"#93000a","primary":"#9d422c","on-surface":"#1e1927","surface-container-low":"#f9f1ff","outline-variant":"#dcc0ba","secondary":"#674bb5","on-error":"#ffffff","on-tertiary":"#ffffff","surface-container":"#f4eafe","surface-container-highest":"#e8dff3","surface-container-lowest":"#ffffff","on-secondary-fixed":"#21005e","tertiary-fixed":"#80f9c8","tertiary-container":"#45c295","primary-container":"#ff8e72"},borderRadius:{"DEFAULT":"1rem","lg":"2rem","xl":"3rem","full":"9999px"},spacing:{"gutter":"1rem","margin-tablet":"2rem","space-lg":"1.5rem","space-xs":"0.25rem","margin":"1.25rem","space-2xl":"3.5rem","gutter-desktop":"1.5rem","space-md":"1rem","margin-desktop":"3rem","space-xl":"2.25rem","gutter-tablet":"1.25rem","space-sm":"0.5rem"},fontFamily:{"headline-lg":["Jua","Plus Jakarta Sans","sans-serif"],"headline-sm":["Jua","Plus Jakarta Sans","sans-serif"],"headline-lg-mobile":["Jua","Plus Jakarta Sans","sans-serif"],"headline-xl-mobile":["Jua","Plus Jakarta Sans","sans-serif"],"body-sm":["Jua","Plus Jakarta Sans","sans-serif"],"headline-md":["Jua","Plus Jakarta Sans","sans-serif"],"label-md":["Jua","Plus Jakarta Sans","sans-serif"],"body-lg":["Jua","Plus Jakarta Sans","sans-serif"],"label-lg":["Jua","Plus Jakarta Sans","sans-serif"],"label-sm":["Jua","Plus Jakarta Sans","sans-serif"],"headline-xl":["Jua","Plus Jakarta Sans","sans-serif"],"body-md":["Jua","Plus Jakarta Sans","sans-serif"]},fontSize:{"headline-lg":["28px",{lineHeight:"38px",letterSpacing:"-0.015em",fontWeight:"600"}],"headline-sm":["18px",{lineHeight:"26px",fontWeight:"600"}],"headline-lg-mobile":["22px",{lineHeight:"32px",letterSpacing:"-0.015em",fontWeight:"600"}],"headline-xl-mobile":["28px",{lineHeight:"38px",letterSpacing:"-0.02em",fontWeight:"700"}],"body-sm":["13px",{lineHeight:"20px",fontWeight:"400"}],"headline-md":["20px",{lineHeight:"30px",letterSpacing:"-0.01em",fontWeight:"600"}],"label-md":["12px",{lineHeight:"16px",letterSpacing:"0.02em",fontWeight:"500"}],"body-lg":["17px",{lineHeight:"28px",letterSpacing:"-0.005em",fontWeight:"400"}],"label-lg":["14px",{lineHeight:"20px",letterSpacing:"0.01em",fontWeight:"600"}],"label-sm":["11px",{lineHeight:"14px",letterSpacing:"0.03em",fontWeight:"600"}],"headline-xl":["36px",{lineHeight:"48px",letterSpacing:"-0.02em",fontWeight:"700"}],"body-md":["15px",{lineHeight:"24px",fontWeight:"400"}]}}}};</script><style>
+@property --mc { syntax: '<color>'; inherits: true; initial-value: #fef7ff; }
+@property --mc2 { syntax: '<color>'; inherits: true; initial-value: #f4eafe; }
+#mood-backdrop { position: fixed; inset: 0; z-index: -9; pointer-events: none; overflow: hidden;
+  background: radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--mc) 65%, transparent) 0%, transparent 62%), linear-gradient(180deg, color-mix(in srgb, var(--mc) 32%, transparent), color-mix(in srgb, var(--mc2) 38%, transparent));
+  transition: --mc .9s ease, --mc2 .9s ease; }
+#mood-backdrop .mb { position: absolute; bottom: -80px; border-radius: 50%; opacity: .0; background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.85), rgba(255,255,255,0) 60%), var(--mc); animation: mbRise linear infinite; }
+@keyframes mbRise { 0% { transform: translateY(0) scale(.8); opacity: 0; } 12% { opacity: .38; } 85% { opacity: .3; } 100% { transform: translateY(-115vh) scale(1.25); opacity: 0; } }
+.emotion-card.tinted-dark, .emotion-card.tinted-dark * { color: #fff !important; }
+.emotion-card { transition: background .5s, transform .3s, box-shadow .3s; }
+.custom-tag input::placeholder { color: inherit; opacity: .7; }
+@media (prefers-reduced-motion: reduce) { #mood-backdrop .mb { animation: none; } }
+</style><style>.page{transition:opacity .35s ease, transform .35s ease}.page.hidden{display:none!important}header img{border:0;outline:none}
+#wave-bg{position:fixed;inset:0;z-index:-12;pointer-events:none;overflow:hidden;background:#cfe3ee}
+#wave-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(2px) saturate(1.08);transform:scale(1.06);opacity:0;display:none;transition:opacity 1.6s ease}
+#wave-bg img.wb-active{display:block}
+#wave-bg img.wb-show{opacity:.6}
+#wave-bg-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(252,245,240,.78), rgba(244,241,251,.82) 55%, rgba(238,246,244,.85)); backdrop-filter:blur(.5px)}
+@media (prefers-reduced-motion: reduce){#wave-bg img{transition:none!important}}
+#bg-blobs{position:fixed;inset:-15%;z-index:-10;pointer-events:none;filter:blur(46px);opacity:.55;will-change:transform;transition:transform .25s ease-out}
+#bg-blobs i{position:absolute;border-radius:50%;display:block;opacity:.6}
+#bg-blobs i:nth-child(1){width:280px;height:280px;left:-60px;top:40px;background:radial-gradient(circle at 30% 30%,#FFD9C7,#FFB4A2 70%);animation:bgDrift1 19s ease-in-out infinite}
+#bg-blobs i:nth-child(2){width:320px;height:320px;right:-80px;top:140px;background:radial-gradient(circle at 40% 40%,#CEBDFF,#A592EC 70%);animation:bgDrift2 23s ease-in-out infinite}
+#bg-blobs i:nth-child(3){width:260px;height:260px;left:60px;bottom:60px;background:radial-gradient(circle at 50% 30%,#A8E6CF,#7FA8EA 70%);animation:bgDrift3 21s ease-in-out infinite}
+#bg-blobs i:nth-child(4){width:220px;height:220px;right:40px;bottom:-40px;background:radial-gradient(circle at 50% 50%,#FFE3F0,#FF9EBB 70%);animation:bgDrift1 26s ease-in-out infinite reverse}
+@keyframes bgDrift1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.08)}66%{transform:translate(-16px,22px) scale(.95)}}
+@keyframes bgDrift2{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(-34px,26px) scale(1.1)}75%{transform:translate(20px,-12px) scale(.92)}}
+@keyframes bgDrift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,18px) scale(1.12)}}
+@media (prefers-reduced-motion: reduce){#bg-blobs i{animation:none!important}#bg-blobs{transition:none!important}}
+</style></head><body class="bg-background font-body-md text-on-surface relative min-h-screen selection:bg-secondary-fixed selection:text-on-secondary-fixed"><div id="wave-bg" aria-hidden="true">
+<img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhreDhxd3lxdjY4bzEzdGxscWVyOHhzNHRmM2I3Z2licWFrczR0aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fdJqExTtVYcvno88M7/giphy.gif" alt="">
+<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXg2b285aWc4aGs0MGNlczNkbW8yNnhrbHdzcXdqOXBsMDVuaHk2cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QvXt2G5or6jnDAZL6b/giphy.gif" alt="">
+<img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3dlenJhMXdlM3FwdDAwZzBtZDJudHI1bnlzZTFtOWltMzI2bTIyYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wSYE7n6pk9dqRXzitR/giphy.gif" alt="">
+<img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHl5OGlxZzZsMHJocndoeGk5NXMwYmp2aHRnbXFzbGs0ZXRmaG1kYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3AzgIKyEZJDPy/giphy.gif" alt="">
+<img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWVuMXZndzhuMXU2czdncjJyODg4YnB3cDZ5MTI4Z29sZXZ6eDZoNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oKIPcUi5VL6KqvWxO/giphy.gif" alt="">
+<div id="wave-bg-overlay"></div>
+</div><script>(function(){
+  const imgs = Array.from(document.querySelectorAll('#wave-bg img'));
+  if (!imgs.length) return;
+  let i = 0;
+  imgs[0].classList.add('wb-active');
+  requestAnimationFrame(() => requestAnimationFrame(() => imgs[0].classList.add('wb-show')));
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function next() {
+    if (document.hidden) return;
+    const cur = imgs[i], ni = (i + 1) % imgs.length, nx = imgs[ni];
+    nx.classList.add('wb-active');
+    requestAnimationFrame(() => requestAnimationFrame(() => nx.classList.add('wb-show')));
+    cur.classList.remove('wb-show');
+    setTimeout(() => cur.classList.remove('wb-active'), 1700);
+    i = ni;
+  }
+  setInterval(next, 7000);
+})();</script><div id="mood-backdrop" aria-hidden="true"></div><div id="bg-blobs" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden"><div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-br from-primary-fixed/40 via-surface-container/60 to-secondary-fixed/40 rounded-full blur-3xl opacity-70"></div><div class="absolute top-1/3 -left-48 w-[500px] h-[500px] bg-gradient-to-tr from-secondary-container/20 to-surface-container-high/30 rounded-full blur-3xl opacity-60"></div><div class="absolute -bottom-48 right-0 w-[600px] h-[600px] bg-gradient-to-tl from-tertiary-fixed/30 via-primary-fixed-dim/20 to-surface-container-low/40 rounded-full blur-3xl opacity-50"></div></div><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 w-full px-gutter-desktop max-w-7xl mx-auto flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md min-w-0"><a id="logo-link" class="flex items-center gap-space-sm group shrink-0" data-path="home" href="#"><img alt="MoodPocket Logo" id="app-logo" class="h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105" style="border:0;outline:none;background:transparent" onerror="this.outerHTML='<span class=\'h-8 w-8 rounded-full flex items-center justify-center text-base\' style=\'background:linear-gradient(135deg,#FFD9C7,#CEBDFF)\'>🧡</span>'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIVSoLOgwPEt5i04_MKv8yzRmlRdv8yknMxMPsd_gmXwyHUSJXtBYwktqN3Hd3tOIJTnGkywABauP5RzloRS4CmMO7a5FcThOsfhNssgg1mzMTXSSRDgGx8K_jt7C0r0srgTEDilWBD4a-Iiwsnn9XaD7VWSqgBPhf5Sy_NOzq6QFzZ-3MU3ap2mZrmCCumpC0IhtEoeoClkuc1tsfraFNZBwpOJbmjWxLnKozNA"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-tight">무드포켓</span><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider leading-none">MoodPocket v2.0</span></div></a><div class="hidden xl:flex items-center gap-space-sm pl-space-md"><div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-high/70 text-on-surface-variant"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-md text-label-md text-on-surface-variant">오늘 흐르는 온기</span><span class="font-label-md text-label-md text-primary font-semibold">14,280건 🌊</span></div><div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-low/90 text-on-surface-variant"><span class="font-label-md text-label-md text-on-surface-variant">마음 정원 레벨 3 🌿</span></div></div></div><nav class="hidden md:flex items-center gap-space-xs px-space-xs py-space-xs rounded-full bg-surface-container-low/80 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold rounded-full"><a aria-current="page" class="px-space-md py-space-xs transition-all duration-200 bg-secondary-container text-on-secondary-container font-semibold rounded-full" data-path="home" href="#">홈 (Home)</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-200" data-path="record" href="#">기록 (Record)</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-200" data-path="wave" href="#">파도타기 (Wave)</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-200" data-path="report" href="#">리포트 (Report)</a></nav><div class="flex items-center gap-space-sm shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-transparent min-h-screen"><div id="page-home" class="page"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto px-gutter-desktop py-space-xl flex flex-col gap-space-2xl">
+<!-- 1. Hero Sanctuary Section -->
+<section class="relative w-full rounded-xl p-space-xl md:p-space-2xl bg-surface-container-lowest/70 backdrop-blur-xl shadow-xl overflow-hidden">
+<div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-primary-fixed/30 via-secondary-fixed/20 to-tertiary-fixed/30 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-secondary-fixed-dim/20 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<!-- Text & Action Column -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container/80 text-on-surface-variant w-fit shadow-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">실시간 마음 안식처</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">오늘 2,841명이 털어놓았어요 ☁️</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<p class="font-headline-xl text-headline-xl text-on-surface tracking-tight leading-snug">
+              오늘 그대의 마음에 부는 바람은 <br class="hidden sm:inline">
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">어떤 결인가요?</span> 🌿
+            </p>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+              아무도 당신을 평가하지 않아요. 꽁꽁 묶어두었던 작은 한숨, 스쳐간 작은 기쁨까지 이 파스텔 캔버스에 조용히 흘려보내 보세요.
+            </p>
+</div>
+<!-- Pulsing Gentle Action Button & Mascot Voice -->
+<div class="flex flex-wrap items-center gap-space-md pt-space-sm">
+<a class="group relative inline-flex items-center gap-space-sm px-space-xl py-space-md rounded-full bg-gradient-to-r from-primary-container via-primary-fixed-dim to-secondary-container text-on-primary font-label-lg text-label-lg shadow-[0_12px_32px_-8px_rgba(255,142,114,0.45)] hover:shadow-[0_16px_36px_-6px_rgba(171,143,254,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300" data-path="record" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:rotate-12" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="">오늘의 감정 비우기</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md px-space-md py-space-xs rounded-full bg-surface-container-high/60 backdrop-blur-md">
+<span class="material-symbols-outlined text-secondary text-[18px]">lock</span>
+<span class="">100% 익명 보장 · 안전한 감정 쉼터</span>
+</div>
+</div>
+</div>
+<!-- Mascot & Atmospheric Card Visual -->
+<div class="lg:col-span-5 flex justify-center lg:justify-end">
+<div class="relative w-full max-w-sm rounded-xl p-space-lg bg-surface-container-lowest/80 backdrop-blur-2xl shadow-xl flex flex-col items-center text-center gap-space-md">
+<div class="relative w-44 h-44 rounded-full overflow-hidden shadow-md flex items-center justify-center bg-surface-container">
+<img src="data:image/jpeg;base64,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" alt="포켓토끼 포키" class="w-full h-full object-cover" style="object-position:50% 50%;transform-origin:50% 55%;animation:pockeySway 6s cubic-bezier(.45,.05,.55,.95) infinite" />
+<style>@keyframes pockeySway{
+0%{transform:translate(0,0) rotate(0deg) scale(1,1)}
+18%{transform:translate(2px,-3px) rotate(-1.1deg) scale(1.012,0.99)}
+38%{transform:translate(0.5px,-5.5px) rotate(0.4deg) scale(0.994,1.012)}
+58%{transform:translate(-2px,-3.5px) rotate(1.2deg) scale(1.008,0.995)}
+78%{transform:translate(-0.5px,-0.5px) rotate(-0.3deg) scale(0.997,1.005)}
+100%{transform:translate(0,0) rotate(0deg) scale(1,1)}
+}</style>
+</div>
+<div class="flex flex-col items-center gap-space-xs">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-primary-fixed/50 text-on-primary-fixed font-label-sm text-label-sm">
+<span class="">포켓토끼 '포키(Pockey)'의 속삭임</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface">"괜찮아요, 그 무게 내려놓아도 돼요"</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">포키가 당신의 감정 조각을 곱게 정돈해 보관해 둘게요.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. My Emotion Mosaic Grid Section -->
+<section class="flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-space-xs font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">
+<span class="">MY EMOTION MOSAIC</span>
+<span class="">•</span>
+<button id="mosaic-prev" class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors" aria-label="이전 달"><span class="material-symbols-outlined text-[16px]">chevron_left</span></button>
+<span id="mosaic-month-label">2026년 11월</span>
+<button id="mosaic-next" class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors disabled:opacity-30 disabled:pointer-events-none" aria-label="다음 달"><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">나의 마음 정원 캔버스</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">지난 30일간 물들인 당신의 감정 팔레트입니다. 날짜를 눌러 그날의 마음에 닿아보세요.</p>
+</div>
+<!-- Streak Badge -->
+<div class="flex items-center gap-space-sm px-space-lg py-space-sm rounded-full bg-surface-container-high/80 backdrop-blur-md shadow-sm w-fit">
+<div class="w-7 h-7 rounded-full bg-primary-container flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold leading-tight">7일 연속 마음 돌봄 중 ✨</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">꾸준히 나를 살피는 따뜻한 발걸음</span>
+</div>
+</div>
+</div>
+<!-- Mosaic Canvas Card -->
+<div class="rounded-xl p-space-lg md:p-space-xl bg-surface-container-lowest/80 backdrop-blur-xl shadow-lg flex flex-col gap-space-lg">
+<!-- Palette Legend -->
+<div class="flex flex-wrap items-center gap-space-md justify-between pt-space-xs">
+<div class="flex flex-wrap items-center gap-space-sm text-on-surface-variant font-label-md text-label-md">
+<span class="font-semibold text-on-surface">감정 색채:</span>
+<div id="mosaic-legend" class="flex flex-wrap items-center gap-1.5"></div>
+<span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-surface-container-highest shadow-sm"></span> 쉼 (미기록)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/80">매일 밤 자정에 조각이 완성돼요</span>
+</div>
+<!-- 30-Day Tiles Grid (Responsive: 5 cols mobile, 6 cols tablet, 10 cols desktop) -->
+<div class="grid grid-cols-7 gap-space-xs sm:gap-space-sm text-center" id="mosaic-weekdays">
+<span class="font-label-sm text-label-sm text-on-surface-variant">일</span><span class="font-label-sm text-label-sm text-on-surface-variant">월</span><span class="font-label-sm text-label-sm text-on-surface-variant">화</span><span class="font-label-sm text-label-sm text-on-surface-variant">수</span><span class="font-label-sm text-label-sm text-on-surface-variant">목</span><span class="font-label-sm text-label-sm text-on-surface-variant">금</span><span class="font-label-sm text-label-sm text-on-surface-variant">토</span>
+</div>
+<div class="grid grid-cols-7 gap-space-xs sm:gap-space-sm" id="mosaic-grid"></div>
+<!-- Inline Detail Reflection Card (Opens on Tile Click) -->
+<div class="rounded-2xl p-space-md bg-surface-container-low/90 backdrop-blur-md shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md transition-all duration-300" id="tile-detail-card">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed shadow-sm" id="tile-icon-box">
+<span class="material-symbols-outlined text-[24px]" id="tile-icon" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface" id="tile-date-label">10월 24일 (오늘)</span>
+<span class="px-space-sm py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold" id="tile-mood-label">평온 · 힐링 🌿</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="tile-note-label">"새벽 공기가 유난히 달콤했던 오늘, 마음의 쉼표 하나를 콕 찍었다."</p>
+<span class="font-label-sm text-label-sm text-secondary font-medium" id="tile-tag-label">#소확행 #새벽감성 #책한페이지</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs self-end md:self-auto shrink-0">
+<a class="px-space-md py-space-xs rounded-full bg-surface-container-highest/80 hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1" data-path="record" href="#">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+<span class="">수정하기</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Collective Heart Mosaic & Community Stats Section -->
+<section class="flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-space-xs font-label-sm text-label-sm text-primary uppercase tracking-wider font-semibold">
+<span class="">COLLECTIVE HEART MOSAIC</span>
+<span class="">•</span>
+<span class="">SHARED SOLIDARITY</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">모두의 마음 캔버스</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">익명의 온기 조각들이 모여 피어난 하나의 하트 모자이크입니다. 마우스를 올려 귓속말을 들어보세요.</p>
+</div>
+<!-- Filter Pill Controls -->
+<div class="flex items-center p-1 rounded-full bg-surface-container-high/80 backdrop-blur-md shadow-sm gap-1 self-start md:self-auto">
+<button class="time-filter-btn px-space-md py-space-xs rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm transition-all" data-period="all">전체</button>
+<button class="time-filter-btn px-space-md py-space-xs rounded-full text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" data-period="today">오늘</button>
+<button class="time-filter-btn px-space-md py-space-xs rounded-full text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" data-period="week">이번 주</button>
+</div>
+</div>
+<!-- Bento Grid: Interactive Heart Mosaic + Stats Panel -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
+<!-- Large Heart Mosaic Visual Canvas (8 Cols) -->
+<div class="lg:col-span-8 rounded-xl p-space-lg md:p-space-xl bg-surface-container-lowest/80 backdrop-blur-xl shadow-lg relative overflow-hidden flex flex-col justify-between min-h-[460px]"><div class="absolute inset-0 flex items-center justify-center pointer-events-none"><div class="w-96 h-96 rounded-full bg-gradient-to-r from-primary-fixed/30 via-secondary-fixed/30 to-tertiary-fixed/30 blur-3xl opacity-50"></div></div><div class="relative z-10 flex flex-col gap-1 pb-space-sm"><div class="flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="text-[22px]">🌈</span><h3 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">모두의 감정 캔버스</h3></div><div class="flex items-center gap-space-xs"><span class="font-label-md text-label-md text-on-surface-variant font-medium">1,284명의 마음</span><a class="text-secondary hover:text-on-secondary-container font-label-sm text-label-sm font-semibold flex items-center gap-0.5 ml-2 transition-colors" data-path="wave" href="#"><span class="hidden sm:inline">파도타기</span><span class="material-symbols-outlined text-[16px]">chevron_right</span></a></div></div><p class="font-body-md text-body-md text-on-surface-variant">이달 가장 많이 번진 색은 <span class="font-semibold text-primary">'평온·힐링'</span>이에요.</p></div><div class="relative z-10 my-auto py-space-sm flex flex-col items-center justify-center"><div class="relative w-full max-w-[440px] aspect-[1/0.95] rounded-3xl p- space-md sm:p-space-lg bg-gradient-to-b from-[#fdf6ff]/70 via-[#f9f1ff]/50 to-[#f6efff]/80 shadow-inner flex flex-col items-center justify-center overflow-hidden border border-white/60"><div class="absolute inset-0 bg-gradient-to-tr from-purple-200/10 via-pink-100/20 to-teal-100/10 pointer-events-none"></div><canvas id="heart-canvas" class="absolute inset-0 w-full h-full z-10 cursor-pointer" style="position:absolute;left:0;top:0;width:100%;height:100%;touch-action:manipulation"></canvas></div></div><div class="relative z-10 flex flex-col items-center gap-space-sm pt-space-xs"><p class="font-body-sm text-body-sm text-on-surface-variant text-center font-medium">조각 하나하나가 오늘 누군가의 마음이에요 · <span class="text-on-surface font-semibold" id="heart-count">620개의 마음이 하트가 되었어요</span></p><p class="font-label-sm text-label-sm text-primary font-semibold text-center min-h-[18px]" id="heart-legend-label">색을 눌러 감정을 확인해보세요</p><div class="flex flex-wrap items-center justify-center gap-2 px-space-md py-space-xs rounded-full bg-surface-container-high/60 backdrop-blur-md shadow-sm w-full max-w-lg" id="heart-legend"></div></div></div>
+<!-- Emotion Statistics Panel (4 Cols) -->
+<div class="lg:col-span-4 rounded-xl p-space-lg md:p-space-xl bg-surface-container-lowest/80 backdrop-blur-xl shadow-lg flex flex-col justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">MONTHLY CLIMATE</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-semibold" id="climate-badge">10월 온기 지수 94점</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface" id="climate-title">이달의 감정 조율계</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="climate-desc">모두의 마음에서 가장 잔잔하게 퍼진 기류입니다.</p>
+</div>
+<div id="climate-body"></div>
+<!-- Bottom Soft Guidance -->
+<div class="p-space-sm rounded-2xl bg-surface-container-low/90 flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+              오늘 밤, 나 자신에게 <strong>"오늘도 애썼어"</strong>라고 소리 내어 말해주는 건 어떨까요?
+            </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Warm Banner Quote -->
+<section class="rounded-xl p-space-lg bg-gradient-to-r from-primary-fixed/20 via-surface-container/60 to-secondary-fixed/20 backdrop-blur-md shadow-sm flex flex-col sm:flex-row items-center justify-between gap-space-md text-center sm:text-left">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">"마음이 흐르는 파도는 언제나 그 자리에 머물지 않아요."</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">슬픔도 지나가고, 작은 행복도 다시 차오릅니다. 오늘도 수고하셨어요.</span>
+</div>
+</div>
+<a class="px-space-lg py-space-sm rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high font-label-md text-label-md shadow-sm transition-all whitespace-nowrap" data-path="wave" href="#">
+        온기 나누러 가기 →
+      </a>
+</section>
+</div>
+</div>
+<script>
+  // 1. My Emotion Mosaic Interactive Calendar
+  const detailCard = document.getElementById('tile-detail-card');
+  const dateLabel = document.getElementById('tile-date-label');
+  const moodLabel = document.getElementById('tile-mood-label');
+  const noteLabel = document.getElementById('tile-note-label');
+  const tagLabel = document.getElementById('tile-tag-label');
+  const iconBox = document.getElementById('tile-icon-box');
+  const tileIcon = document.getElementById('tile-icon');
+  const trgb = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16));
+  const tlight = (h, f) => '#' + trgb(h).map(v => Math.round(v + (255 - v) * f).toString(16).padStart(2, '0')).join('');
+  const tdark = (h, f) => '#' + trgb(h).map(v => Math.round(v * (1 - f)).toString(16).padStart(2, '0')).join('');
+  const tileGradient = h => `linear-gradient(150deg, ${tlight(h, 0.4)} 0%, ${h} 58%, ${tdark(h, 0.14)} 100%)`;
+
+  const moodColors = {
+    '상큼·기쁨': { bg: '#FFAAA5', dark: false, icon: 'sentiment_satisfied' },
+    '열정·의욕': { bg: '#FFB347', dark: false, icon: 'bolt' },
+    '활기·뿌듯': { bg: '#FFD3B6', dark: false, icon: 'celebration' },
+    '평온·힐링': { bg: '#A8E6CF', dark: false, icon: 'spa' },
+    '상쾌·홀가분': { bg: '#87CEEB', dark: false, icon: 'air' },
+    '차분·몽환': { bg: '#5D5D81', dark: true, icon: 'bedtime' },
+    '불안·걱정': { bg: '#DCD0FF', dark: false, icon: 'cloud' },
+    '설렘·사랑': { bg: '#FF9EBB', dark: false, icon: 'favorite' },
+    '분노·짜증': { bg: '#FF6B6B', dark: false, icon: 'local_fire_department' },
+    '우울·슬픔': { bg: '#9B59B6', dark: true, icon: 'water_drop' },
+    '지침·무기력': { bg: '#B4B4BC', dark: false, icon: 'cloud' },
+    '무덤덤·일상': { bg: '#E8D5C4', dark: false, icon: 'coffee' }
+  };
+  const MOOD_KEYS = Object.keys(moodColors);
+  const legend = document.getElementById('mosaic-legend');
+  if (legend) legend.innerHTML = MOOD_KEYS.map(k => `<span class="inline-flex items-center gap-1" title="${k}"><span class="w-3 h-3 rounded-full shadow-sm" style="background:${moodColors[k].bg}"></span></span>`).join('');
+  const heartLegend = document.getElementById('heart-legend'), heartLegendLabel = document.getElementById('heart-legend-label');
+  if (heartLegend) {
+    heartLegend.innerHTML = MOOD_KEYS.map(k => `<button type="button" class="heart-legend-dot w-5 h-5 rounded-full shadow-sm transition-transform hover:scale-125 focus:outline-none" style="background:${moodColors[k].bg}" data-mood="${k}" title="${k}" aria-label="${k}"></button>`).join('');
+    heartLegend.addEventListener('click', e => {
+      const dot = e.target.closest('.heart-legend-dot'); if (!dot) return;
+      const k = dot.dataset.mood, cfg = moodColors[k];
+      if (heartLegendLabel) { heartLegendLabel.textContent = `${k} 🎨`; heartLegendLabel.style.color = cfg.bg; }
+      heartLegend.querySelectorAll('.heart-legend-dot').forEach(b => b.style.outline = '');
+      dot.style.outline = `2px solid ${cfg.bg}`; dot.style.outlineOffset = '2px';
+    });
+  }
+  const NOTES = [
+    ['산책길에 노랗게 물든 은행잎을 보며 따뜻한 라떼를 마셨다.', '#가을산책'],
+    ['밀린 잠을 몰아 자고 나니 몸이 조금 가벼워졌다.', '#휴식'],
+    ['별일 아닌 걸로 괜히 마음이 복잡했던 하루.', '#생각많음'],
+    ['친구와 오랜만에 통화하며 웃었다.', '#소확행'],
+    ['할 일을 미루다 저녁에 몰아서 끝냈다.', '#마감'],
+    ['창밖 빗소리를 들으며 책을 읽었다.', '#비오는날']
+  ];
+  const seedRand = n => { const x = Math.sin(n) * 43758.5453; return x - Math.floor(x); };
+  const dayData = (y, m, d) => {
+    const seed = y * 400 + m * 31 + d;
+    return { mood: MOOD_KEYS[Math.floor(seedRand(seed) * MOOD_KEYS.length)], note: NOTES[Math.floor(seedRand(seed + 99) * NOTES.length)] };
+  };
+
+  const REAL_TODAY = new Date(2026, 10, 6); // 2026년 11월 6일(금)
+  let viewY = REAL_TODAY.getFullYear(), viewM = REAL_TODAY.getMonth();
+  const grid = document.getElementById('mosaic-grid');
+  const monthLabel = document.getElementById('mosaic-month-label');
+  const nextBtn = document.getElementById('mosaic-next');
+
+  function renderCalendar() {
+    monthLabel.textContent = `${viewY}년 ${viewM + 1}월`;
+    grid.innerHTML = '';
+    const first = new Date(viewY, viewM, 1).getDay();
+    const days = new Date(viewY, viewM + 1, 0).getDate();
+    const isCurrentMonth = viewY === REAL_TODAY.getFullYear() && viewM === REAL_TODAY.getMonth();
+    const isFutureMonth = viewY > REAL_TODAY.getFullYear() || (viewY === REAL_TODAY.getFullYear() && viewM > REAL_TODAY.getMonth());
+    nextBtn.disabled = isCurrentMonth || isFutureMonth;
+    for (let i = 0; i < first; i++) grid.appendChild(document.createElement('div'));
+    for (let d = 1; d <= days; d++) {
+      const isFuture = isFutureMonth || (isCurrentMonth && d > REAL_TODAY.getDate());
+      const isToday = isCurrentMonth && d === REAL_TODAY.getDate();
+      const btn = document.createElement('button');
+      if (isFuture) {
+        btn.className = 'aspect-square rounded-2xl bg-surface-container-highest/50 flex items-center justify-center text-on-surface-variant/40 font-label-md text-label-md';
+        btn.textContent = d;
+        btn.disabled = true;
+      } else {
+        const { mood, note } = dayData(viewY, viewM, d), cfg = moodColors[mood], tc = cfg.dark ? '#ffffff' : '#3B3A52';
+        btn.className = 'mosaic-tile group relative aspect-square rounded-2xl hover:scale-105 active:scale-95 transition-all duration-200 shadow-sm flex flex-col items-center justify-center p-2 focus:outline-none' + (isToday ? ' ring-2 ring-offset-1 ring-primary' : '');
+        btn.style.background = tileGradient(cfg.bg);
+        btn.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 3px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.08)';
+        btn.dataset.day = d; btn.dataset.mood = mood; btn.dataset.note = note[0]; btn.dataset.tag = note[1]; btn.dataset.today = isToday ? '1' : '';
+        btn.innerHTML = `<span class="font-label-md text-label-md font-bold" style="color:${tc}">${d}</span><span class="material-symbols-outlined text-[16px] mt-1 opacity-75 group-hover:scale-125 transition-transform" style="color:${tc};font-variation-settings: 'FILL' 1;">${cfg.icon}</span>`;
+      }
+      grid.appendChild(btn);
+    }
+  }
+  document.getElementById('mosaic-prev').addEventListener('click', () => { viewM--; if (viewM < 0) { viewM = 11; viewY--; } renderCalendar(); });
+  nextBtn.addEventListener('click', () => { viewM++; if (viewM > 11) { viewM = 0; viewY++; } renderCalendar(); });
+  grid.addEventListener('click', e => {
+    const tile = e.target.closest('.mosaic-tile'); if (!tile || !detailCard) return;
+    const day = tile.dataset.day, mood = tile.dataset.mood, note = tile.dataset.note, tag = tile.dataset.tag;
+    dateLabel.textContent = `${viewM + 1}월 ${day}일` + (tile.dataset.today === '1' ? ' (오늘)' : '');
+    moodLabel.textContent = mood;
+    noteLabel.textContent = `"${note}"`;
+    tagLabel.textContent = tag;
+    const cfg = moodColors[mood];
+    iconBox.className = 'w-12 h-12 rounded-full flex items-center justify-center shadow-sm';
+    iconBox.style.background = tileGradient(cfg.bg);
+    iconBox.style.color = cfg.dark ? '#ffffff' : '#3B3A52';
+    tileIcon.textContent = cfg.icon;
+    detailCard.classList.add('scale-[1.01]');
+    setTimeout(() => detailCard.classList.remove('scale-[1.01]'), 200);
+  });
+  renderCalendar();
+
+  // 이달의 감정 조율계: 전체/오늘/이번주 필터로 '나의' 감정 비율 보여주기
+  const CIRC = 251.2;
+  function rangeDays(period) {
+    const y = REAL_TODAY.getFullYear(), m = REAL_TODAY.getMonth(), t = REAL_TODAY.getDate(), out = [];
+    if (period === 'today') { out.push([y, m, t]); return out; }
+    if (period === 'week') {
+      const dow = REAL_TODAY.getDay();
+      for (let i = dow; i >= 0; i--) { const dt = new Date(y, m, t - i); out.push([dt.getFullYear(), dt.getMonth(), dt.getDate()]); }
+      return out;
+    }
+    for (let i = 0; i < 90; i++) { const dt = new Date(y, m, t - i); out.push([dt.getFullYear(), dt.getMonth(), dt.getDate()]); }
+    return out;
+  }
+  const PERIOD_LABEL = { all: '전체 90일', today: '오늘', week: '이번 주' };
+  function renderClimate(period) {
+    const days = rangeDays(period), counts = {};
+    days.forEach(([y, m, d]) => { const { mood } = dayData(y, m, d); counts[mood] = (counts[mood] || 0) + 1; });
+    const order = Object.keys(counts).sort((a, b) => counts[b] - counts[a]).slice(0, 4);
+    const total = order.reduce((s, k) => s + counts[k], 0);
+    let acc = 0;
+    const circles = order.map(k => {
+      const pct = counts[k] / total, len = CIRC * pct, off = -acc * CIRC;
+      acc += pct;
+      return `<circle class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="${moodColors[k].bg}" stroke-dasharray="${len.toFixed(1)} ${CIRC}" stroke-dashoffset="${off.toFixed(1)}" stroke-width="12"></circle>`;
+    }).join('');
+    const top = order[0], topPct = Math.round((counts[top] / total) * 100);
+    const bars = order.map(k => {
+      const pct = Math.round((counts[k] / total) * 100), hex = moodColors[k].bg;
+      return `<div class="flex flex-col gap-1"><div class="flex items-center justify-between font-label-md text-label-md"><span class="flex items-center gap-1.5 text-on-surface"><span class="w-2.5 h-2.5 rounded-full" style="background:${hex}"></span>${k}</span><span class="font-semibold text-on-surface">${pct}%</span></div><div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:${hex}"></div></div></div>`;
+    }).join('');
+    document.getElementById('climate-body').innerHTML = `
+      <div class="relative w-44 h-44 mx-auto flex items-center justify-center my-space-xs">
+        <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+          <circle class="text-surface-container-high" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="12"></circle>
+          ${circles}
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+          <span class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">${top}</span>
+          <span class="font-label-sm text-label-sm text-tertiary font-semibold">${topPct}% 우세</span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-space-sm">${bars}</div>`;
+    document.getElementById('climate-title').textContent = `${PERIOD_LABEL[period]}의 감정 조율계`;
+    document.getElementById('climate-desc').textContent = '내가 머문 마음의 색을 모아봤어요.';
+    document.getElementById('climate-badge').textContent = `${days.length}일간의 기록`;
+  }
+  document.querySelectorAll('.time-filter-btn').forEach(b => b.addEventListener('click', () => renderClimate(b.dataset.period || 'all')));
+  renderClimate('all');
+
+  // 2. Collective Heart Interactive Whispers
+  const collectiveTiles = document.querySelectorAll('.collective-tile');
+  const tooltipText = document.getElementById('collective-story-text');
+
+  collectiveTiles.forEach(tile => {
+    tile.addEventListener('mouseenter', () => {
+      const story = tile.getAttribute('data-story');
+      if (story) {
+        tooltipText.textContent = story;
+        tooltipText.parentElement.classList.add('opacity-100');
+      }
+    });
+
+    tile.addEventListener('click', () => {
+      const story = tile.getAttribute('data-story');
+      if (story) {
+        tooltipText.textContent = story;
+      }
+    });
+  });
+
+  // 3. Filter tabs toggle
+  const filterBtns = document.querySelectorAll('.time-filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-primary-container', 'text-on-primary');
+        b.classList.add('text-on-surface-variant');
+      });
+      btn.classList.add('bg-primary-container', 'text-on-primary');
+      btn.classList.remove('text-on-surface-variant');
+    });
+  });
+</script></div><div id="page-record" class="page hidden"><div class="flex flex-col w-full">
+<div class="w-full max-w-5xl mx-auto px-gutter-desktop py-space-xl flex flex-col gap-space-xl">
+<!-- Top Introduction & Emotional Safehouse Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-high/80 text-secondary w-fit shadow-sm">
+<span class="material-symbols-outlined text-[18px]">spa</span>
+<span class="font-label-md text-label-md font-semibold">3초 감정 흘려보내기</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">
+          오늘 하루 마음에 머문 색을 골라주세요 🎨
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+          판단하지 않고 그대로 바라봐 주는 안전한 포켓입니다. 무겁거나 가벼운 어떤 마음도 여기선 온전히 당신의 편이에요.
+        </p>
+</div>
+<!-- Quick Today Garden Widget -->
+<div class="flex items-center gap-space-sm bg-surface-container-low/90 backdrop-blur-md p-space-sm rounded-2xl shadow-sm self-start md:self-auto">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">cloud_download</span>
+</div>
+<div class="flex flex-col pr-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">오늘의 누적 릴리즈</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">오후 08:34 • 4번째 보폭</span>
+</div>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- Left Column: 12 Emotional Color Tiles Palette (7 Cols) -->
+<section class="lg:col-span-7 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">palette</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">1. 마음에 머무는 색채</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">터치하여 선택해주세요</span>
+</div>
+<!-- 12 Emotion Grid: 3x4 on Mobile, 4x3 on Desktop -->
+<div class="grid grid-cols-3 sm:grid-cols-4 gap-space-sm sm:gap-space-md" id="emotion-grid">
+<!-- Emotion 1: Peach Coral -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="peach" data-emotion-name="상큼·기쁨" data-theme-color="bg-primary-container" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🍑</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">상큼·기쁨</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Peach Coral</span>
+</button>
+<!-- Emotion 2: Warm Tangerine -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="tangerine" data-emotion-name="열정·의욕" data-theme-color="bg-primary" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🔥</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">열정·의욕</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Tangerine</span>
+</button>
+<!-- Emotion 3: Mint Sage (Default ACTIVE) -->
+<button class="emotion-card is-active group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-tertiary-fixed/30 scale-105 shadow-md" data-emotion-id="mint" data-emotion-name="평온·힐링" data-theme-color="bg-tertiary-fixed" type="button">
+<div class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-tertiary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-tertiary text-[14px]">check</span>
+</div>
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🌿</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">평온·힐링</span>
+<span class="font-label-sm text-label-sm text-tertiary font-medium">Mint Sage</span>
+</button>
+<!-- Emotion 4: Pastel Pink -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="pink" data-emotion-name="사랑·포근" data-theme-color="bg-primary-fixed" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">💖</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">사랑·포근</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Pastel Pink</span>
+</button>
+<!-- Emotion 5: Golden Chamomile -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="golden" data-emotion-name="감사·뿌듯" data-theme-color="bg-secondary-fixed" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🌻</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">감사·뿌듯</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Chamomile</span>
+</button>
+<!-- Emotion 6: Sky Blue -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="sky" data-emotion-name="설렘·기대" data-theme-color="bg-secondary-fixed-dim" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🎈</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">설렘·기대</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sky Blue</span>
+</button>
+<!-- Emotion 7: Cloud Fog Grey -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="fog" data-emotion-name="멍함·무감각" data-theme-color="bg-surface-variant" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">☁️</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">멍함·무감각</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cloud Fog</span>
+</button>
+<!-- Emotion 8: Soft Lavender Dusk -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="lavender" data-emotion-name="불안·걱정" data-theme-color="bg-secondary-container" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🫧</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">불안·걱정</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Lavender</span>
+</button>
+<!-- Emotion 9: Twilight Indigo -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="indigo" data-emotion-name="우울·슬픔" data-theme-color="bg-inverse-surface" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🌧️</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">우울·슬픔</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Indigo</span>
+</button>
+<!-- Emotion 10: Muted Lilac -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="lilac" data-emotion-name="외로움·고독" data-theme-color="bg-surface-container-high" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">🌙</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">외로움·고독</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Muted Lilac</span>
+</button>
+<!-- Emotion 11: Rose Crimson -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="crimson" data-emotion-name="분노·짜증" data-theme-color="bg-error-container" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">⚡</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">분노·짜증</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Rose Crimson</span>
+</button>
+<!-- Emotion 12: Soft Sand Clay -->
+<button class="emotion-card group relative p-space-md rounded-2xl flex flex-col items-center justify-center gap-space-xs transition-all duration-300 text-center bg-surface-container-low/80 hover:bg-surface-container hover:scale-[1.03] shadow-sm" data-emotion-id="clay" data-emotion-name="지침·번아웃" data-theme-color="bg-surface-dim" type="button">
+<span class="text-3xl filter drop-shadow-sm transition-transform group-hover:scale-110">☕</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">지침·번아웃</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sand Clay</span>
+</button>
+</div>
+<!-- Atmospheric Calming Visualizer Micro-Panel -->
+<div class="mt-space-sm p-space-md rounded-3xl bg-surface-container-low/70 backdrop-blur-md flex items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="relative w-12 h-12 rounded-2xl bg-tertiary-fixed/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-[24px]">air</span>
+<span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-tertiary rounded-full"></span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface" id="selected-badge-title">현재 감정: 평온·힐링 (Mint Sage 🌿)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">깊은 호흡 한 번과 함께 마음의 소용돌이를 내려놓으세요.</span>
+</div>
+</div>
+<!-- Calming Audio / Breathing Pulse Dot -->
+<div class="hidden sm:flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-high/60">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">정적인 파동</span>
+</div>
+</div>
+</section>
+<!-- Right Column: Situation Tags & Venting Textarea & Wave Release (5 Cols) -->
+<section class="lg:col-span-5 flex flex-col gap-space-lg">
+<!-- Step 2: Hashtag Selector -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-lg p-space-lg rounded-3xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]">tag</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">2. 지금 마음에 닿는 상황</span>
+</div>
+<span class="font-label-md text-label-md font-semibold px-space-sm py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed" id="tag-counter">
+              선택됨 2 / 3
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            오늘 당신을 흔들거나 머물게 했던 장면을 골라주세요 (최대 3개).
+          </p>
+<!-- Hashtag Chips -->
+<div class="flex flex-wrap gap-space-xs pt-space-xs" id="hashtag-container">
+<button class="tag-chip is-selected px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-secondary-container text-on-secondary-container font-semibold shadow-sm" data-tag="산책길" type="button">
+              #산책길
+            </button>
+<button class="tag-chip is-selected px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-secondary-container text-on-secondary-container font-semibold shadow-sm" data-tag="혼자만의시간" type="button">
+              #혼자만의시간
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="소확행" type="button">
+              #소확행
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="야근" type="button">
+              #야근
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="새벽감성" type="button">
+              #새벽감성
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="인간관계" type="button">
+              #인간관계
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="퇴근길" type="button">
+              #퇴근길
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="번아웃" type="button">
+              #번아웃
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="새로운도전" type="button">
+              #새로운도전
+            </button>
+<button class="tag-chip px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 bg-surface-container hover:bg-surface-container-high text-on-surface-variant" data-tag="맛있는한끼" type="button">
+              #맛있는한끼
+            </button>
+</div>
+</div>
+<!-- Step 3: Journal / One-line Memo Input -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-lg p-space-lg rounded-3xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">edit_note</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">3. 한 줄 속마음 메모 (선택)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="char-counter">42 / 100자</span>
+</div>
+<div class="relative mt-space-xs">
+<textarea class="w-full bg-surface-container-low/70 focus:bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/60 font-body-md text-body-md rounded-2xl p-space-md resize-none transition-all duration-200 outline-none focus:shadow-md" id="memo-input" maxlength="100" placeholder="색상과 태그 외에 오늘 마음에 하고 싶은 말을 가볍게 적어보세요... (최대 100자)" rows="3">창밖으로 스치는 바람이 유난히 시원해서 잠시 멈춰 섰던 하루.</textarea>
+</div>
+<!-- Micro Whisper Tip -->
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary">lock</span>
+<span class="font-label-sm text-label-sm">누구에게도 보이지 않고 혼자만의 캘린더에만 묻어둘 수도 있어요.</span>
+</div>
+</div>
+<!-- Step 4: Release & Floating Action -->
+<div class="bg-gradient-to-br from-surface-container-low via-surface-container to-surface-container-high/90 p-space-lg rounded-3xl shadow-md flex flex-col gap-space-md">
+<!-- Wave Floating Consent Checkbox -->
+<label class="flex items-start gap-space-sm cursor-pointer select-none group">
+<div class="relative flex items-center justify-center mt-0.5">
+<input checked="" class="peer sr-only" id="wave-public-toggle" type="checkbox"/>
+<div class="w-5 h-5 rounded-lg bg-surface-container-high peer-checked:bg-secondary flex items-center justify-center transition-all duration-200 shadow-inner">
+<span class="material-symbols-outlined text-on-secondary text-[16px] opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface group-hover:text-primary transition-colors flex items-center gap-space-xs">
+                🌊 익명으로 '오늘의 파도'에 띄워 보내기
+              </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+                이름 없이 순수한 온기만 흘려보내며, 누군가의 조용한 위로 하트를 받을 수 있습니다.
+              </span>
+</div>
+</label>
+<!-- Main CTA Glowing Button -->
+<button class="relative overflow-hidden w-full py-space-md px-space-lg rounded-full font-headline-sm text-headline-sm text-on-primary bg-gradient-to-r from-primary-container via-primary to-secondary shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-space-sm" id="btn-release" type="button">
+<span class="material-symbols-outlined text-[24px]">air</span>
+<span class="tracking-wide">감정 흘려보내기 🍃</span>
+<span class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity pointer-events-none"></span>
+</button>
+<!-- Bottom Micro Safety Footnote -->
+<div class="flex items-center justify-center gap-space-xs text-on-surface-variant text-center pt-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">verified_user</span>
+<span class="font-label-sm text-label-sm">
+              기록된 감정은 나의 캘린더에 안전하게 보관됩니다.
+            </span>
+</div>
+</div>
+</section>
+</div>
+<!-- Community Emotion Pulse Banner (Visual Context & Reassurance) -->
+<div class="w-full bg-surface-container-low/70 backdrop-blur-md rounded-3xl p-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-2xl bg-secondary-fixed flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[26px]">water_drop</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">지금 같은 파도를 타는 사람들</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+            오늘 당신과 같은 <span class="font-semibold text-tertiary">‘평온·힐링 🌿’</span> 색채를 마음에 품은 3,842명의 이웃이 함께 숨 쉬고 있어요.
+          </span>
+</div>
+</div>
+<!-- Gentle Empathy Flow Indicators -->
+<div class="flex items-center -space-x-2 shrink-0">
+<div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-label-sm text-label-sm shadow-sm">🍑</div>
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed font-label-sm text-label-sm shadow-sm">🌿</div>
+<div class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-label-sm text-label-sm shadow-sm">🫧</div>
+<div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center font-label-sm text-label-sm text-on-surface-variant shadow-sm pl-1">
+          +3k
+        </div>
+</div>
+</div>
+<!-- Success Modal Dialog (Hidden by Default) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-gutter bg-on-background/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" id="release-modal">
+<div class="w-full max-w-md bg-surface-container-lowest p-space-xl rounded-3xl shadow-2xl flex flex-col items-center text-center gap-space-md transform scale-95 transition-transform duration-300">
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed/60 flex items-center justify-center text-tertiary animate-bounce">
+<span class="material-symbols-outlined text-[36px]">flutter_dash</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">마음이 파도 위로 흘러갔어요</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            오늘 담아둔 한 조각의 감정이 안전하게 보관되었습니다.<br/>가벼워진 걸음으로 편안한 밤 보내세요.
+          </p>
+</div>
+<div class="w-full pt-space-xs">
+<button class="w-full py-space-sm px-space-md rounded-full bg-secondary text-on-secondary font-label-lg text-label-lg shadow-sm hover:bg-secondary/90 transition-all" id="btn-modal-close" type="button">
+            따뜻하게 닫기
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro Interaction Logic -->
+<script>
+    (function () {
+      // 1. Emotion Card Select
+      const emotionCards = document.querySelectorAll('.emotion-card');
+      const badgeTitle = document.getElementById('selected-badge-title');
+
+      emotionCards.forEach(card => {
+        card.addEventListener('click', () => {
+          emotionCards.forEach(c => {
+            c.classList.remove('is-active', 'bg-tertiary-fixed/30', 'scale-105', 'shadow-md');
+            c.classList.add('bg-surface-container-low/80');
+            const check = c.querySelector('.material-symbols-outlined.text-on-tertiary');
+            if (check && check.parentElement) {
+              check.parentElement.remove();
+            }
+          });
+
+          card.classList.add('is-active', 'bg-tertiary-fixed/30', 'scale-105', 'shadow-md');
+          card.classList.remove('bg-surface-container-low/80');
+
+          // Inject checkmark badge
+          const checkmark = document.createElement('div');
+          checkmark.className = 'absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-tertiary flex items-center justify-center shadow-sm';
+          checkmark.innerHTML = '<span class="material-symbols-outlined text-on-tertiary text-[14px]">check</span>';
+          card.appendChild(checkmark);
+
+          const name = card.getAttribute('data-emotion-name');
+          const icon = card.querySelector('span.text-3xl')?.textContent || '';
+          if (badgeTitle) {
+            badgeTitle.textContent = `현재 감정: ${name} (${icon})`;
+          }
+        });
+      });
+
+      // 2. Hashtag Multi-select (Max 3)
+      const tagChips = document.querySelectorAll('.tag-chip');
+      const tagCounter = document.getElementById('tag-counter');
+
+      function updateTagCounter() {
+        const count = document.querySelectorAll('.tag-chip.is-selected').length;
+        if (tagCounter) {
+          tagCounter.textContent = `선택됨 ${count} / 3`;
+        }
+      }
+
+      tagChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const isSelected = chip.classList.contains('is-selected');
+          const currentCount = document.querySelectorAll('.tag-chip.is-selected').length;
+
+          if (isSelected) {
+            chip.classList.remove('is-selected', 'bg-secondary-container', 'text-on-secondary-container', 'font-semibold', 'shadow-sm');
+            chip.classList.add('bg-surface-container', 'text-on-surface-variant');
+          } else {
+            if (currentCount >= 3) {
+              chip.classList.add('animate-pulse');
+              setTimeout(() => chip.classList.remove('animate-pulse'), 300);
+              return;
+            }
+            chip.classList.add('is-selected', 'bg-secondary-container', 'text-on-secondary-container', 'font-semibold', 'shadow-sm');
+            chip.classList.remove('bg-surface-container', 'text-on-surface-variant');
+          }
+          updateTagCounter();
+        });
+      });
+
+      // 3. Textarea Counter
+      const memoInput = document.getElementById('memo-input');
+      const charCounter = document.getElementById('char-counter');
+      if (memoInput && charCounter) {
+        memoInput.addEventListener('input', (e) => {
+          const length = e.target.value.length;
+          charCounter.textContent = `${length} / 100자`;
+        });
+      }
+
+      // 4. Release Action & Modal Interaction
+      const btnRelease = document.getElementById('btn-release');
+      const releaseModal = document.getElementById('release-modal');
+      const btnModalClose = document.getElementById('btn-modal-close');
+
+      if (btnRelease && releaseModal) {
+        btnRelease.addEventListener('click', () => {
+          releaseModal.classList.remove('opacity-0', 'pointer-events-none');
+          const modalBox = releaseModal.querySelector('div');
+          if (modalBox) {
+            modalBox.classList.remove('scale-95');
+            modalBox.classList.add('scale-100');
+          }
+        });
+      }
+
+      if (btnModalClose && releaseModal) {
+        btnModalClose.addEventListener('click', () => {
+          releaseModal.classList.add('opacity-0', 'pointer-events-none');
+          const modalBox = releaseModal.querySelector('div');
+          if (modalBox) {
+            modalBox.classList.add('scale-95');
+            modalBox.classList.remove('scale-100');
+          }
+        });
+      }
+    })();
+  </script>
+</div></div><div id="page-wave" class="page hidden"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto px-gutter-desktop py-space-md flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-container/60 backdrop-blur-xl rounded-xl p-space-md shadow-sm">
+<div class="flex flex-wrap items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[26px]">waves</span>
+<h1 class="font-headline-md text-headline-md text-on-surface">마음의 바다 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal tracking-normal">(The Mind Ocean)</span></h1>
+</div>
+<div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-high/90 text-on-surface">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-label-md text-label-md text-on-surface-variant">지금 바다 위를 표류 중인 마음:</span>
+<span class="font-label-lg text-label-lg text-primary font-bold" id="ocean-live-count">1,428</span>
+<span class="font-label-md text-label-md text-on-surface-variant">개 🌊</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-lowest/80 p-1.5 rounded-full shadow-inner">
+<button class="ocean-theme-btn flex items-center gap-1.5 px-space-md py-1 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all duration-300" id="theme-sunrise" onclick="setOceanTheme('sunrise')">
+<span>🌅 일출</span>
+<span class="font-label-sm text-label-sm opacity-60 hidden lg:inline">Sunrise</span>
+</button>
+<button class="ocean-theme-btn flex items-center gap-1.5 px-space-md py-1 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all duration-300" id="theme-sunset" onclick="setOceanTheme('sunset')">
+<span>🌇 일몰</span>
+<span class="font-label-sm text-label-sm opacity-60 hidden lg:inline">Sunset</span>
+</button>
+<button class="ocean-theme-btn active-theme flex items-center gap-1.5 px-space-md py-1 rounded-full font-label-md text-label-md bg-secondary-container text-on-secondary-container font-semibold transition-all duration-300 shadow-sm" id="theme-midnight" onclick="setOceanTheme('midnight')">
+<span>🌙 새벽밤</span>
+<span class="font-label-sm text-label-sm opacity-80 hidden lg:inline">Midnight</span>
+</button>
+</div>
+</div>
+<div class="relative w-full h-[580px] lg:h-[620px] rounded-xl overflow-hidden shadow-xl transition-all duration-700 select-none bg-gradient-to-b from-[#1b152e] via-[#241c3d] to-[#120f21]" id="ocean-viewport">
+<canvas id="ocean-canvas" class="absolute inset-0 w-full h-full" style="position:absolute;left:0;top:0;width:100%;height:100%"></canvas>
+<div class="absolute top-space-md left-space-md z-10 flex items-center gap-space-sm bg-surface/40 backdrop-blur-md px-space-md py-1.5 rounded-full shadow-sm pointer-events-auto">
+<span class="material-symbols-outlined text-secondary text-[18px]">explore</span>
+<span class="font-label-sm text-label-sm text-on-surface">표류 감정 카드를 클릭해 깊은 마음을 읽어보세요</span>
+</div>
+<div class="absolute inset-0 overflow-hidden pointer-events-none" id="ocean-surface-canvas">
+<div class="group absolute left-0 top-0 cursor-pointer will-change-transform" id="bottle-1" onclick="openStoryModal(1)">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface/70 backdrop-blur-lg flex items-center justify-center shadow-lg group-hover:bg-surface-bright transition-colors">
+<span class="text-xl">☕</span>
+</div>
+<div class="mt-2 w-56 p-space-md rounded-lg bg-surface/85 backdrop-blur-xl shadow-lg transition-all duration-300 group-hover:bg-surface group-hover:shadow-2xl">
+<div class="flex items-center justify-between gap-space-xs mb-1">
+<span class="font-label-sm text-label-sm text-primary font-semibold">12분 전 표류</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">#소확행</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2 leading-snug">오늘 프로젝트 발표 망쳤다고 생각했는데 팀원이 수고했다고 커피를 줬어요... 눈물 날 뻔</p>
+<div class="mt-2 flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>🫂 243</span>
+<span>🤍 189</span>
+</div>
+</div>
+</div>
+</div>
+<div class="group absolute left-0 top-0 cursor-pointer will-change-transform" id="bottle-2" onclick="openStoryModal(2)">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface/70 backdrop-blur-lg flex items-center justify-center shadow-lg group-hover:bg-surface-bright transition-colors">
+<span class="text-xl">🌙</span>
+</div>
+<div class="mt-2 w-64 p-space-md rounded-lg bg-surface/85 backdrop-blur-xl shadow-lg transition-all duration-300 group-hover:bg-surface group-hover:shadow-2xl">
+<div class="flex items-center justify-between gap-space-xs mb-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">28분 전 표류</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">#새벽감성</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2 leading-snug">아무것도 안 하고 가만히 누워있고만 싶은 밤. 나만 뒤처지는 걸까 봐 두려워요.</p>
+<div class="mt-2 flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>🫂 412</span>
+<span>🤍 320</span>
+</div>
+</div>
+</div>
+</div>
+<div class="group absolute left-0 top-0 cursor-pointer will-change-transform" id="bottle-3" onclick="openStoryModal(3)">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface/70 backdrop-blur-lg flex items-center justify-center shadow-lg group-hover:bg-surface-bright transition-colors">
+<span class="text-xl">🐱</span>
+</div>
+<div class="mt-2 w-60 p-space-md rounded-lg bg-surface/85 backdrop-blur-xl shadow-lg transition-all duration-300 group-hover:bg-surface group-hover:shadow-2xl">
+<div class="flex items-center justify-between gap-space-xs mb-1">
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">1시간 전 표류</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">#평온</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2 leading-snug">혼자 떠난 여행지에서 마주친 고양이가 나를 한참 바라봐 주었다. 마음이 풀렸다.</p>
+<div class="mt-2 flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>🤍 256</span>
+<span>💪 95</span>
+</div>
+</div>
+</div>
+</div>
+<div class="group absolute left-0 top-0 cursor-pointer will-change-transform" id="bottle-4" onclick="openStoryModal(4)">
+<div class="flex flex-col items-center">
+<div class="w-9 h-9 rounded-full bg-surface/75 backdrop-blur-lg flex items-center justify-center shadow-md">
+<span class="text-lg">🌿</span>
+</div>
+<div class="mt-2 w-52 p-space-sm rounded-lg bg-surface/80 backdrop-blur-xl shadow-md transition-all duration-300 group-hover:bg-surface group-hover:shadow-xl">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-tertiary">3시간 전</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">#치유</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2">비 온 뒤 흙냄새를 깊게 마셨다. 아주 작은 것으로도 숨이 쉬어진다.</p>
+</div>
+</div>
+</div>
+<div class="group absolute left-0 top-0 cursor-pointer will-change-transform" id="bottle-5" onclick="openStoryModal(5)">
+<div class="flex flex-col items-center">
+<div class="w-9 h-9 rounded-full bg-surface/75 backdrop-blur-lg flex items-center justify-center shadow-md">
+<span class="text-lg">🌊</span>
+</div>
+<div class="mt-2 w-52 p-space-sm rounded-lg bg-surface/80 backdrop-blur-xl shadow-md transition-all duration-300 group-hover:bg-surface group-hover:shadow-xl">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-secondary">5시간 전</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">#털어놓기</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2">누구에게도 말 못 했던 내 못난 질투심, 이 파도에 실어 보냅니다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-space-lg right-space-lg z-20">
+<button class="flex items-center gap-space-sm px-space-lg py-space-sm rounded-full bg-gradient-to-r from-primary-container via-primary to-secondary text-on-primary shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 animate-pulse" onclick="openComposeModal()">
+<span class="material-symbols-outlined text-[22px]">sailing</span>
+<span class="font-label-lg text-label-lg font-bold">나의 감정도 파도에 띄우기</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">favorite</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">해안가에 닿은 따뜻한 온기들</h2>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">모두 안전하게 익명 처리된 이야기입니다</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="group cursor-pointer p-space-lg rounded-xl bg-surface-container-low/90 hover:bg-surface-container transition-all duration-300 shadow-sm flex flex-col justify-between gap-space-md" onclick="openStoryModal(1)">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">12분 전 릴리즈</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant">#소확행 #직장인</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-space-xs leading-relaxed group-hover:text-primary transition-colors">
+              "오늘 프로젝트 발표 망쳤다고 생각했는데 팀원이 수고했다고 커피를 줬어요... 눈물 날 뻔 ☕"
+            </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">🫂</span> 243
+              </span>
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">🤍</span> 189
+              </span>
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">💪</span> 95
+              </span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary text-[20px] transition-colors">arrow_forward</span>
+</div>
+</div>
+<div class="group cursor-pointer p-space-lg rounded-xl bg-surface-container-low/90 hover:bg-surface-container transition-all duration-300 shadow-sm flex flex-col justify-between gap-space-md" onclick="openStoryModal(2)">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">28분 전 릴리즈</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant">#번아웃 #새벽감성</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-space-xs leading-relaxed group-hover:text-secondary transition-colors">
+              "아무것도 안 하고 가만히 누워있고만 싶은 밤. 나만 뒤처지는 걸까 봐 두려워요."
+            </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">🫂</span> 412
+              </span>
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">🤍</span> 320
+              </span>
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">💪</span> 140
+              </span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary text-[20px] transition-colors">arrow_forward</span>
+</div>
+</div>
+<div class="group cursor-pointer p-space-lg rounded-xl bg-surface-container-low/90 hover:bg-surface-container transition-all duration-300 shadow-sm flex flex-col justify-between gap-space-md" onclick="openStoryModal(3)">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">1시간 전 릴리즈</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant">#혼자만의시간 #평온</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-space-xs leading-relaxed group-hover:text-tertiary transition-colors">
+              "혼자 떠난 여행지에서 마주친 고양이가 나를 한참 바라봐 주었다."
+            </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">🫂</span> 176
+              </span>
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">🤍</span> 256
+              </span>
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-on-surface-variant">
+<span class="text-sm">💪</span> 95
+              </span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-tertiary text-[20px] transition-colors">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-space-md bg-inverse-surface/40 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" id="story-modal" style="z-index:1000">
+<div class="relative w-full max-w-lg bg-surface/95 backdrop-blur-2xl rounded-xl p-space-xl shadow-2xl flex flex-col gap-space-md transform scale-95 transition-transform duration-300" id="story-modal-card">
+<div class="pointer-events-none absolute inset-0 overflow-hidden rounded-xl" id="particle-canvas"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-2xl" id="modal-icon">☕</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant" id="modal-time">12분 전 바다에 띄움</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold" id="modal-tag">#소확행 #직장인</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="closeStoryModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="py-space-sm">
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed" id="modal-content">
+          오늘 프로젝트 발표 망쳤다고 생각했는데 팀원이 수고했다고 커피를 줬어요... 눈물 날 뻔 ☕
+        </p>
+</div>
+<div class="bg-surface-container-low/70 rounded-lg p-space-md flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">따뜻한 마음 보내기 (클릭하여 공감)</span>
+<div class="flex flex-wrap items-center gap-space-xs pt-1">
+<button class="flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface hover:bg-primary-fixed/40 transition-all duration-200 active:scale-95 shadow-sm" id="btn-react-1" onclick="sendReaction('comfort', event)">
+<span class="text-base">🫂</span>
+<span class="font-label-md text-label-md text-on-surface">위로해</span>
+<span class="font-label-md text-label-md text-primary font-bold" id="count-comfort">243</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface hover:bg-secondary-fixed/40 transition-all duration-200 active:scale-95 shadow-sm" id="btn-react-2" onclick="sendReaction('pat', event)">
+<span class="text-base">🤍</span>
+<span class="font-label-md text-label-md text-on-surface">토닥토닥</span>
+<span class="font-label-md text-label-md text-secondary font-bold" id="count-pat">189</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface hover:bg-tertiary-fixed/40 transition-all duration-200 active:scale-95 shadow-sm" id="btn-react-3" onclick="sendReaction('cheer', event)">
+<span class="text-base">💪</span>
+<span class="font-label-md text-label-md text-on-surface">힘내자</span>
+<span class="font-label-md text-label-md text-tertiary font-bold" id="count-cheer">95</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-space-xs">
+<span class="font-label-sm text-label-sm">바다에 띄운 감정은 24시간 후 모래톱으로 흡수됩니다.</span>
+<button class="font-label-md text-label-md text-primary font-semibold hover:underline" onclick="closeStoryModal()">닫기</button>
+</div>
+</div>
+</div>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-space-md bg-inverse-surface/40 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" id="compose-modal" style="z-index:1000">
+<div class="w-full max-w-lg bg-surface/95 backdrop-blur-2xl rounded-xl p-space-xl shadow-2xl flex flex-col gap-space-md transform scale-95 transition-transform duration-300" id="compose-modal-card">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">sailing</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">파도에 감정 띄우기</h3>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="closeComposeModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        이름도 얼굴도 남지 않습니다. 바다 위 조용한 파도가 당신의 감정을 안아줄 거예요.
+      </p>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface">감정의 형태 (아이콘 선택)</label>
+<div class="flex items-center gap-space-xs">
+<button class="bottle-emoji-btn active-emoji w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-xl transition-all" onclick="selectBottleIcon('☕')" type="button">☕</button>
+<button class="bottle-emoji-btn w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-xl transition-all" onclick="selectBottleIcon('🌙')" type="button">🌙</button>
+<button class="bottle-emoji-btn w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-xl transition-all" onclick="selectBottleIcon('🐱')" type="button">🐱</button>
+<button class="bottle-emoji-btn w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-xl transition-all" onclick="selectBottleIcon('🌿')" type="button">🌿</button>
+<button class="bottle-emoji-btn w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-xl transition-all" onclick="selectBottleIcon('🌊')" type="button">🌊</button>
+<button class="bottle-emoji-btn w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-xl transition-all" onclick="selectBottleIcon('✨')" type="button">✨</button>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface" for="compose-text">표류시킬 마음 한 줄</label>
+<textarea class="w-full p-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/40 outline-none resize-none focus:ring-2 focus:ring-primary/40" id="compose-text" placeholder="바다에 던져두고 싶은 솔직한 생각이나 위로받고 싶은 이야기를 적어보세요..." rows="4"></textarea>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs">
+<button class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="closeComposeModal()">취소</button>
+<button class="px-space-lg py-space-xs rounded-full font-label-lg text-label-lg bg-primary text-on-primary font-semibold shadow-md hover:bg-on-primary-fixed-variant transition-colors" onclick="submitEmotionBottle()">바다로 띄우기 ⛵</button>
+</div>
+</div>
+</div>
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-inverse-surface text-inverse-on-surface shadow-xl opacity-0 pointer-events-none transition-all duration-300" id="toast">
+<span class="material-symbols-outlined text-tertiary-fixed text-[20px]">check_circle</span>
+<span class="font-label-lg text-label-lg" id="toast-text">온기가 성공적으로 전해졌습니다 🌊</span>
+</div>
+</div>
+<script>
+  const storyData = {
+    1: {
+      icon: "☕",
+      time: "12분 전 표류",
+      tag: "#소확행 #직장인",
+      content: "오늘 프로젝트 발표 망쳤다고 생각했는데 팀원이 수고했다고 커피를 줬어요... 눈물 날 뻔 ☕",
+      comfort: 243,
+      pat: 189,
+      cheer: 95
+    },
+    2: {
+      icon: "🌙",
+      time: "28분 전 표류",
+      tag: "#번아웃 #새벽감성",
+      content: "아무것도 안 하고 가만히 누워있고만 싶은 밤. 나만 뒤처지는 걸까 봐 두려워요.",
+      comfort: 412,
+      pat: 320,
+      cheer: 140
+    },
+    3: {
+      icon: "🐱",
+      time: "1시간 전 표류",
+      tag: "#혼자만의시간 #평온",
+      content: "혼자 떠난 여행지에서 마주친 고양이가 나를 한참 바라봐 주었다. 마음이 풀렸다.",
+      comfort: 176,
+      pat: 256,
+      cheer: 95
+    },
+    4: {
+      icon: "🌿",
+      time: "3시간 전 표류",
+      tag: "#치유 #호흡",
+      content: "비 온 뒤 흙냄새를 깊게 마셨다. 아주 작은 것으로도 숨이 쉬어진다.",
+      comfort: 98,
+      pat: 114,
+      cheer: 42
+    },
+    5: {
+      icon: "🌊",
+      time: "5시간 전 표류",
+      tag: "#털어놓기 #정리",
+      content: "누구에게도 말 못 했던 내 못난 질투심, 이 파도에 실어 보냅니다.",
+      comfort: 210,
+      pat: 185,
+      cheer: 88
+    }
+  };
+
+  let currentStoryId = null;
+  let selectedEmoji = "☕";
+
+  function setOceanTheme(theme) {
+    document.querySelectorAll('.ocean-theme-btn').forEach(b => {
+      b.classList.remove('active-theme', 'bg-secondary-container', 'text-on-secondary-container', 'font-semibold', 'shadow-sm');
+      b.classList.add('text-on-surface-variant');
+    });
+    const btn = document.getElementById('theme-' + theme);
+    if (btn) { btn.classList.add('active-theme', 'bg-secondary-container', 'text-on-secondary-container', 'font-semibold', 'shadow-sm'); btn.classList.remove('text-on-surface-variant'); }
+    if (window.oceanApplyTheme) window.oceanApplyTheme(theme);
+  }
+
+  function openStoryModal(id) {
+    currentStoryId = id;
+    const data = storyData[id];
+    if (!data) return;
+
+    document.getElementById('modal-icon').innerText = data.icon;
+    document.getElementById('modal-time').innerText = data.time;
+    document.getElementById('modal-tag').innerText = data.tag;
+    document.getElementById('modal-content').innerText = data.content;
+    document.getElementById('count-comfort').innerText = data.comfort;
+    document.getElementById('count-pat').innerText = data.pat;
+    document.getElementById('count-cheer').innerText = data.cheer;
+
+    const modal = document.getElementById('story-modal');
+    const card = document.getElementById('story-modal-card');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    card.classList.remove('scale-95');
+    card.classList.add('scale-100');
+  }
+
+  function closeStoryModal() {
+    if (window.ocean) window.ocean.sel = null;
+    const modal = document.getElementById('story-modal');
+    const card = document.getElementById('story-modal-card');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    card.classList.remove('scale-100');
+    card.classList.add('scale-95');
+  }
+
+  function sendReaction(type, event) {
+    if (!currentStoryId) return;
+    storyData[currentStoryId][type] += 1;
+
+    const targetEl = document.getElementById(`count-${type}`);
+    if (targetEl) {
+      targetEl.innerText = storyData[currentStoryId][type];
+    }
+
+    createRippleParticle(event.clientX, event.clientY);
+    showToast("마음이 파도를 타고 전해졌습니다 🤍");
+  }
+
+  function createRippleParticle(x, y) {
+    const canvas = document.getElementById('particle-canvas');
+    const particle = document.createElement('div');
+    particle.className = "absolute w-4 h-4 text-primary text-xl pointer-events-none select-none transition-all duration-1000";
+    particle.innerText = "🤍";
+    particle.style.left = `${Math.random() * 80 + 10}%`;
+    particle.style.bottom = "20px";
+    particle.style.opacity = "1";
+    particle.style.transform = "translateY(0) scale(1)";
+
+    canvas.appendChild(particle);
+
+    setTimeout(() => {
+      particle.style.transform = `translateY(-120px) scale(${1.4 + Math.random() * 0.4})`;
+      particle.style.opacity = "0";
+    }, 20);
+
+    setTimeout(() => {
+      particle.remove();
+    }, 1100);
+  }
+
+  function openComposeModal() {
+    const modal = document.getElementById('compose-modal');
+    const card = document.getElementById('compose-modal-card');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    card.classList.remove('scale-95');
+    card.classList.add('scale-100');
+  }
+
+  function closeComposeModal() {
+    const modal = document.getElementById('compose-modal');
+    const card = document.getElementById('compose-modal-card');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    card.classList.remove('scale-100');
+    card.classList.add('scale-95');
+  }
+
+  function selectBottleIcon(emoji) {
+    selectedEmoji = emoji;
+    document.querySelectorAll('.bottle-emoji-btn').forEach(btn => {
+      btn.classList.remove('bg-surface-container-high', 'scale-110');
+      btn.classList.add('bg-surface-container-low');
+    });
+    event.currentTarget.classList.add('bg-surface-container-high', 'scale-110');
+    event.currentTarget.classList.remove('bg-surface-container-low');
+  }
+
+  function submitEmotionBottle() {
+    const text = document.getElementById('compose-text').value.trim();
+    if (!text) {
+      showToast("마음의 내용을 입력해 주세요.");
+      return;
+    }
+
+    const liveCount = document.getElementById('ocean-live-count');
+    if (liveCount) {
+      let currentVal = parseInt(liveCount.innerText.replace(/,/g, ''), 10) || 1428;
+      liveCount.innerText = (currentVal + 1).toLocaleString();
+    }
+
+    if (window.oceanAddBottle) window.oceanAddBottle(selectedEmoji, text);
+    document.getElementById('compose-text').value = "";
+    closeComposeModal();
+    showToast("감정 병이 잔잔한 파도 위로 떠올랐습니다 🌊");
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toast-text');
+    toastText.innerText = msg;
+    toast.classList.remove('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'pointer-events-none');
+    }, 2400);
+  }
+</script>
+<style>
+  @keyframes floatA {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-16px) rotate(2deg); }
+  }
+  @keyframes floatB {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-22px) rotate(-3deg); }
+  }
+  @keyframes floatC {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(1.5deg); }
+  }
+  @keyframes floatD {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(-2deg); }
+  }
+  @keyframes wave {
+    0% { transform: translateX(0) scaleY(1); }
+    100% { transform: translateX(-40px) scaleY(1.15); }
+  }
+</style></div><div id="page-report" class="page hidden"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto px-gutter-desktop py-space-xl flex flex-col gap-space-2xl">
+<!-- Top Context & Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-secondary-fixed/50 w-fit">
+<span class="material-symbols-outlined text-[16px] text-secondary">mail_lock</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase">Weekly Reflection • Edition #42</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">10월 4째주 지민 님의 마음 기상도 ⛅</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+          한 주 동안 <span class="font-semibold text-primary">18번의 감정</span>을 포켓에 담았어요. 가장 긴 평온을 마주한 주간이었습니다.
+        </p>
+</div>
+<!-- Quick Action Group -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all duration-200 shadow-sm active:scale-95" id="saveCardBtn">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span class="font-label-lg text-label-lg">감성 이미지로 저장하기</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary hover:bg-primary/90 transition-all duration-200 shadow-md active:scale-95" id="shareWarmthBtn">
+<span class="material-symbols-outlined text-[18px]">share</span>
+<span class="font-label-lg text-label-lg">온기 나누기</span>
+</button>
+</div>
+</div>
+<!-- Main Content Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- Left Column: AI Persona Letter (Spans 7 cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg">
+<!-- Letter Container with Cream Papyrus Texture & Glassmorphic Border -->
+<div class="relative rounded-lg bg-surface-container-lowest/90 backdrop-blur-xl p-space-xl shadow-xl overflow-hidden group transition-all duration-300 hover:shadow-2xl" id="letterPaper">
+<!-- Ambient gradient flare inside letter -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-fixed/30 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -bottom-20 -left-20 w-64 h-64 bg-secondary-fixed/40 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Top Letter Envelope Tab & Wax Seal -->
+<div class="flex items-center justify-between pb-space-lg">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="font-label-md text-label-md text-on-surface-variant tracking-wider uppercase">Dear. 지민 • AI 마음 우체통</span>
+</div>
+<!-- Wax Seal Badge -->
+<div class="relative w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-md shadow-primary/30 transform transition-transform group-hover:rotate-12 duration-300">
+<div class="w-10 h-10 rounded-full bg-primary-container/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+</div>
+<!-- Letter Content -->
+<div class="flex flex-col gap-space-md py-space-sm">
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed font-light">
+              “안녕, 지민. 이번 주 너는 유독 <span class="px-2 py-0.5 rounded-full bg-secondary-fixed-dim/30 font-medium text-secondary">야근</span>과 <span class="px-2 py-0.5 rounded-full bg-primary-fixed/40 font-medium text-primary">불안</span>을 자주 포켓에 넣었더라. 많이 버티느라 수고했어.
+            </p>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed font-light">
+              하지만 목요일 밤에는 <span class="px-2 py-0.5 rounded-full bg-tertiary-fixed/40 font-medium text-tertiary">#소확행</span> 태그와 함께 작은 노을을 감상했던 걸 기억해. 그 작은 틈을 발견해낸 너의 다정함이 참 대견해.
+            </p>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed font-light">
+              이번 주말엔 따뜻한 차 한 잔과 함께 깊은 숨을 쉬어주렴. 💌”
+            </p>
+<div class="pt-space-md flex items-end justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">발신인</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">다정한 마음 우체부 올림 🌿</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant/80">2025.10.26 21:40</span>
+</div>
+</div>
+<!-- Voice / Audio Player Strip -->
+<div class="mt-space-xl p-space-md rounded-DEFAULT bg-surface-container-high/60 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md w-full sm:w-auto">
+<button class="w-11 h-11 shrink-0 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all" id="audioPlayToggle">
+<span class="material-symbols-outlined text-[22px]" id="playIcon">play_arrow</span>
+</button>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface truncate">따뜻한 목소리로 듣기 🎧</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="audioStatusText">오디오 북 형식 • 01:24</span>
+</div>
+</div>
+<!-- Waveform Visualizer Simulation -->
+<div class="flex items-center gap-1 h-6 w-full sm:w-48 px-space-xs justify-center sm:justify-end">
+<div class="w-1 bg-secondary rounded-full h-3 transition-all duration-200"></div>
+<div class="w-1 bg-secondary-container rounded-full h-5 transition-all duration-200"></div>
+<div class="w-1 bg-primary rounded-full h-2 transition-all duration-200"></div>
+<div class="w-1 bg-primary-container rounded-full h-6 transition-all duration-200"></div>
+<div class="w-1 bg-tertiary rounded-full h-4 transition-all duration-200"></div>
+<div class="w-1 bg-secondary rounded-full h-2 transition-all duration-200"></div>
+<div class="w-1 bg-secondary-container rounded-full h-5 transition-all duration-200"></div>
+<div class="w-1 bg-primary rounded-full h-3 transition-all duration-200"></div>
+<div class="w-1 bg-tertiary rounded-full h-6 transition-all duration-200"></div>
+<div class="w-1 bg-primary-container rounded-full h-2 transition-all duration-200"></div>
+<div class="w-1 bg-secondary rounded-full h-4 transition-all duration-200"></div>
+</div>
+</div>
+</div>
+<!-- Visual Story Card (Placeholder 1) -->
+<div class="rounded-lg overflow-hidden bg-surface-container-lowest p-space-lg shadow-md flex flex-col md:flex-row items-center gap-space-lg">
+<img class="w-full md:w-44 h-36 rounded-DEFAULT object-cover shrink-0" data-alt="A soft, contemplative photograph of a ceramic tea mug placed beside an open cream notebook with gentle late afternoon golden hour sunlight streaming across a cozy wooden table, warm pastel colors in blush peach and lavender tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_l5ZKdBay9k2GTdNQnE3L_NfsYyW3IKN8GgEjanrk0TYPgm6SQNPHxK6xiLdJM84J4X852inVi8SSPrv97jfRvUeuMFy_VNRfoBqJB7hvxgEEnoRTgtygatMYWi8tsdmtWjpzZREwIyEKzrdvMId_1GppQOPYH-ikakdizeBSJr4YB4ai8ytQGaH5K3nXbX-VgmzpUe-WN1-1IeC3m2Vwm-CX5gdiRw30_MVyYA"/>
+<div class="flex flex-col gap-space-xs min-w-0">
+<span class="font-label-sm text-label-sm text-primary tracking-wider uppercase">Weekly Curated Ritual</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">이번 주말 지민 님만을 위한 따뜻한 제안</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              캐모마일 차를 우려내는 3분의 시간 동안, 스마트폰을 잠시 내려놓고 창문 밖 노을을 멍하니 응시해보세요. 심박수가 안정되며 자율신경계가 차분해집니다.
+            </p>
+</div>
+</div>
+</div>
+<!-- Right Column: Emotion Analytics & Metrics (Spans 5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-lg">
+<!-- Emotion Distribution Donut & Stats -->
+<div class="rounded-lg bg-surface-container-lowest/80 backdrop-blur-md p-space-xl shadow-md flex flex-col gap-space-lg">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Emotion Dominance</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">주간 감정 분포</h2>
+</div>
+<span class="px-space-md py-space-xs rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">총 18개 기록</span>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-space-lg justify-around">
+<!-- SVG Donut Chart (Sub 2KB, themed) -->
+<div class="relative w-36 h-36 shrink-0 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Circle -->
+<circle class="text-surface-container" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-width="12"></circle>
+<!-- 평온 힐링 (38%) -> offset 0 to 95.5 -->
+<circle class="text-tertiary" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="155.7" stroke-linecap="round" stroke-width="12"></circle>
+<!-- 불안 걱정 (27%) -> offset 95.5 to 163.3 -->
+<circle class="text-secondary" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="183.4" stroke-linecap="round" stroke-width="12" transform="rotate(136.8 50 50)"></circle>
+<!-- 상큼 기쁨 (21%) -> offset -->
+<circle class="text-primary-container" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="198.4" stroke-linecap="round" stroke-width="12" transform="rotate(234 50 50)"></circle>
+<!-- 피로 지침 (14%) -->
+<circle class="text-outline-variant" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="216.0" stroke-linecap="round" stroke-width="12" transform="rotate(309.6 50 50)"></circle>
+</svg>
+<!-- Center Inner Metric -->
+<div class="absolute flex flex-col items-center justify-center text-center">
+<span class="font-headline-sm text-headline-sm text-on-surface">38%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">평온</span>
+</div>
+</div>
+<!-- Legend Progress Rows -->
+<div class="flex flex-col gap-space-sm w-full">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span> 평온 • 힐링
+                  </span>
+<span class="font-semibold text-tertiary">38%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 38%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span> 불안 • 걱정
+                  </span>
+<span class="font-semibold text-secondary">27%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 27%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span> 상큼 • 기쁨
+                  </span>
+<span class="font-semibold text-primary">21%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 21%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span> 피로 • 지침
+                  </span>
+<span class="font-semibold text-on-surface-variant">14%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-outline-variant h-full rounded-full" style="width: 14%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Weekly Spline Emotion Curve Graph -->
+<div class="rounded-lg bg-surface-container-lowest/80 backdrop-blur-md p-space-xl shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Weekly Rhythm Curve</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">요일별 마음 파도 곡선</h3>
+</div>
+<span class="text-tertiary flex items-center gap-0.5 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[16px]">trending_up</span> 주 후반 회복세
+            </span>
+</div>
+<!-- Spline Curve Chart (SVG) -->
+<div class="w-full h-36 pt-space-xs flex flex-col justify-end relative">
+<svg class="w-full h-28 overflow-visible" fill="none" viewbox="0 0 300 80">
+<defs>
+<lineargradient id="waveGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ab8ffe" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#ab8ffe" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Filled area underneath -->
+<path d="M 10 50 C 40 70, 70 75, 100 65 C 130 55, 160 25, 200 20 C 240 15, 270 25, 290 20 L 290 80 L 10 80 Z" fill="url(#waveGradient)"></path>
+<!-- Smooth Spline Line -->
+<path d="M 10 50 C 40 70, 70 75, 100 65 C 130 55, 160 25, 200 20 C 240 15, 270 25, 290 20" stroke="#674bb5" stroke-linecap="round" stroke-width="3"></path>
+<!-- Markers -->
+<circle class="fill-surface stroke-secondary stroke-2" cx="10" cy="50" r="3.5"></circle>
+<circle class="fill-error stroke-surface stroke-2" cx="60" cy="72" r="4"></circle>
+<circle class="fill-surface stroke-secondary stroke-2" cx="100" cy="65" r="3.5"></circle>
+<circle class="fill-surface stroke-secondary stroke-2" cx="150" cy="38" r="3.5"></circle>
+<circle class="fill-tertiary stroke-surface stroke-2" cx="200" cy="20" r="4"></circle>
+<circle class="fill-surface stroke-secondary stroke-2" cx="250" cy="22" r="3.5"></circle>
+<circle class="fill-tertiary stroke-surface stroke-2" cx="290" cy="20" r="4"></circle>
+</svg>
+<!-- Day Axis Labels -->
+<div class="flex justify-between items-center px-1 font-label-sm text-label-sm text-on-surface-variant pt-2">
+<span>월</span>
+<span class="text-error font-medium">화(긴장)</span>
+<span>수</span>
+<span class="text-tertiary font-medium">목(노을)</span>
+<span>금</span>
+<span>토</span>
+<span class="text-secondary font-medium">일</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center pt-space-xs">
+            월•화 집중 스트레스 구간을 지나, 목요일 저녁부터 평온 지수가 완만하게 상승했습니다.
+          </p>
+</div>
+<!-- Top 3 Hashtags Cloud -->
+<div class="rounded-lg bg-surface-container-lowest/80 backdrop-blur-md p-space-lg shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Frequently Tagged</span>
+<span class="font-label-sm text-label-sm text-primary">지민 님의 키워드</span>
+</div>
+<div class="flex flex-wrap gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[16px]">nights_stay</span>
+<span class="font-label-lg text-label-lg font-semibold">#새벽감성</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded-full bg-surface-container-lowest text-secondary">8회</span>
+</div>
+<div class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-tertiary-fixed text-on-tertiary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[16px]">wb_twilight</span>
+<span class="font-label-lg text-label-lg font-semibold">#소확행</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded-full bg-surface-container-lowest text-tertiary">6회</span>
+</div>
+<div class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[16px]">work_history</span>
+<span class="font-label-lg text-label-lg font-semibold">#야근</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded-full bg-surface-container-lowest text-primary">5회</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MoodPocket PRO Upsell Banner (Refined Glass Bento) -->
+<div class="relative w-full rounded-lg bg-gradient-to-r from-secondary-container via-surface-container-high to-primary-fixed p-space-xl overflow-hidden shadow-lg">
+<div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-2xl">
+<div class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-lowest/80 text-on-secondary-container w-fit">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+<span class="font-label-sm text-label-sm font-bold uppercase tracking-wider">MoodPocket PRO • 심층 리포트</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">
+            깊은 무의식 패턴 분석과 무제한 AI 심리 테라피스트를 열어보세요 ✨
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            3개월 누적 바이오리듬 예측, 감정 촉발 트리거(Trigger) 심층 분석, 그리고 언제든 마음을 털어놓을 수 있는 1:1 대화방이 활성화됩니다.
+          </p>
+</div>
+<div class="flex flex-col sm:flex-row md:flex-col items-center gap-space-sm shrink-0 w-full sm:w-auto">
+<button class="w-full sm:w-auto px-space-xl py-space-md rounded-full bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-lg hover:bg-on-primary-container transition-all duration-200 active:scale-95 text-center">
+            첫 달 무료 체험 시작하기
+          </button>
+<span class="font-label-sm text-label-sm text-on-surface-variant">체험 기간 중 언제든 간편 해지 가능</span>
+</div>
+</div>
+<!-- Abstract Decorative Shapes -->
+<div class="absolute -right-12 -bottom-12 w-56 h-56 rounded-full bg-primary-container/30 blur-2xl pointer-events-none"></div>
+</div>
+<!-- Image & Download Gallery Banner (Placeholder 2 & 3) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Card Download Aesthetic Formats -->
+<div class="rounded-lg bg-surface-container-lowest p-space-xl flex flex-col justify-between gap-space-md shadow-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-primary">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span class="font-label-md text-label-md font-semibold">인스타그램 • 굿노트 다이어리 팩</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">주간 감정 스티커 &amp; 카드 템플릿</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            이번 주에 생성된 편지와 파도 곡선을 인스타그램 스토리 규격(9:16) 및 태블릿 다이어리용 투명 PNG 스티커로 즉시 저장하세요.
+          </p>
+</div>
+<div class="flex items-center gap-space-sm pt-space-sm">
+<button class="flex-1 py-space-sm px-space-md rounded-full bg-surface-container text-on-surface hover:bg-surface-variant font-label-md text-label-md flex items-center justify-center gap-1 transition-colors" onclick="triggerToast('굿노트 스티커 팩이 다운로드되었습니다.')">
+<span class="material-symbols-outlined text-[16px]">play_pause</span> 굿노트 스티커 (PNG)
+          </button>
+<button class="flex-1 py-space-sm px-space-md rounded-full bg-surface-container text-on-surface hover:bg-surface-variant font-label-md text-label-md flex items-center justify-center gap-1 transition-colors" onclick="triggerToast('인스타그램 스토리 카드가 생성되었습니다.')">
+<span class="material-symbols-outlined text-[16px]">photo_camera</span> 인스타 스토리 카드
+          </button>
+</div>
+</div>
+<!-- Ambient Atmosphere Image Box -->
+<div class="rounded-lg overflow-hidden relative shadow-md group min-h-[180px] flex items-end p-space-lg bg-surface-container">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A dreamy serene botanical garden room with misty morning fog, soft lavender light filtering through sheer curtains, a resting aesthetic armchair, peaceful and therapeutic pastel ambiance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhN6FOv2wVdDawIIkItSJejy6etcJwqd_bjhPCehnK45VGuaUMRiPr8SjhoQ5Adx-e0lawOvYZHVyD0bHW7ABYs9dc2AX9xrEqXg7lneF2SX4vdC0nt-N_vVvIlDrZpigUbg1vjaGg5gjKVIAzNPW2ZUV_slzeqKhwmUMhT1GGuQdOmzEdOJIiKbbRIm-pjcBN3tDebEbhcDh53Dlps9WZWwICTsZg483KNmyo6w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-on-surface/20 to-transparent"></div>
+<div class="relative z-10 flex items-center justify-between w-full text-on-primary">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-surface-variant">Next Week Horizon</span>
+<span class="font-headline-sm text-headline-sm">다음 주는 더 맑은 호흡이 찾아옵니다</span>
+</div>
+<span class="material-symbols-outlined text-[24px]">spa</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Toast Notification Container -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-space-sm px-space-lg py-space-sm rounded-full bg-inverse-surface text-inverse-on-surface shadow-2xl" id="toastNotification">
+<span class="material-symbols-outlined text-tertiary-fixed text-[20px]">check_circle</span>
+<span class="font-label-lg text-label-lg" id="toastMessage">알림 메시지</span>
+</div>
+</div>
+<script>
+  // Simple Audio Play Simulation
+  const playBtn = document.getElementById('audioPlayToggle');
+  const playIcon = document.getElementById('playIcon');
+  const audioStatusText = document.getElementById('audioStatusText');
+  let isPlaying = false;
+
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        playIcon.textContent = 'pause';
+        audioStatusText.textContent = '재생 중... 00:14 / 01:24 🎧';
+        triggerToast('다정한 우체부의 음성 편지를 재생합니다.');
+      } else {
+        playIcon.textContent = 'play_arrow';
+        audioStatusText.textContent = '일시 정지됨 &bull; 01:24';
+      }
+    });
+  }
+
+  // Toast Functionality
+  function triggerToast(message) {
+    const toast = document.getElementById('toastNotification');
+    const toastMsg = document.getElementById('toastMessage');
+    if (!toast || !toastMsg) return;
+
+    toastMsg.textContent = message;
+    toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    setTimeout(() => {
+      toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 2800);
+  }
+
+  // Card Download & Share Hooks
+  const saveBtn = document.getElementById('saveCardBtn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      triggerToast('10월 4째주 감정 카드가 갤러리에 저장되었습니다 📥');
+    });
+  }
+
+  const shareBtn = document.getElementById('shareWarmthBtn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => {
+      if (navigator.share) {
+        navigator.share({
+          title: '무드포켓 이번 주 마음 기상도',
+          text: '한 주 동안 18번의 감정을 포켓에 담았어요. 가장 긴 평온을 마주한 주간이었습니다.',
+          url: window.location.href,
+        }).catch(() => {});
+      } else {
+        triggerToast('공유 링크가 클립보드에 복사되었습니다 🌊');
+      }
+    });
+  }
+</script></div></main><footer class="w-full bg-surface-container-low/80 backdrop-blur-md mt-space-2xl"><div class="w-full max-w-7xl mx-auto px-gutter-desktop py-space-xl flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-col items-center md:items-start gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface">무드포켓 MoodPocket</span><span class="font-body-sm text-body-sm text-on-surface-variant">상처받지 않는 익명 감정 안식처 • 온기를 주고받는 잔잔한 파도</span></div><div class="flex items-center gap-space-md"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="wave-community-guidelines" href="#">안심 가이드라인</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacy-shelter" href="#">개인정보 안심보호</a><a class="font-label-md text-label-md text-primary hover:text-on-primary-fixed-variant transition-colors" data-path="emergency-warmth-hotline" href="#">위기상담 핫라인</a></div><div class="font-label-sm text-label-sm text-on-surface-variant text-center md:text-right">© 2025 MoodPocket. All warm emotions safely kept.</div></div></footer>
+
+
+<script>
+(function () {
+  const cv = document.getElementById('heart-canvas'), frame = cv.parentElement;
+  const SPEC = [['pink', '#FF9EBB', '설렘·사랑'], ['red', '#FF6B6B', '분노·짜증'], ['coral', '#FFAAA5', '상큼·기쁨'], ['orange', '#FFB347', '열정·의욕'], ['yellow', '#FFD3B6', '활기·뿌듯'], ['beige', '#E8D5C4', '무덤덤·일상'],
+    ['mint', '#A8E6CF', '평온·힐링'], ['skyblue', '#87CEEB', '상쾌·홀가분'], ['lavender', '#DCD0FF', '불안·걱정'], ['purple', '#9B59B6', '우울·슬픔'], ['navy', '#5D5D81', '차분·몽환'], ['grey', '#B4B4BC', '지침·무기력']];
+  const RGB = SPEC.map(p => [1, 3, 5].map(i => parseInt(p[1].substr(i, 2), 16)));
+  const BASE = [.07, .04, .11, .07, .08, .07, .14, .08, .09, .05, .06, .14];
+  const ORD = [0, 11, 2, 9, 3, 6, 10, 4, 7, 1, 5, 8];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const H = { tiles: [], W: 0, Hh: 0, cell: 0, cum: [], t: 0, last: 0, vis: false, parts: [], ps: 0, rip: [], mx: -999, my: -999, live: 0, built: false };
+  const tip = document.createElement('div');
+  tip.className = 'absolute z-20 pointer-events-none px-3 py-1.5 rounded-full bg-white/95 shadow-lg text-xs font-semibold text-gray-700 whitespace-nowrap opacity-0 transition-opacity duration-150';
+  tip.style.cssText += ';position:absolute;transform:translate(-50%,-130%)'; frame.appendChild(tip);
+  function setWeights(period) {
+    const w = BASE.map((v, i) => { let m = 1; if (period === 'today' && [0, 2, 3, 4].includes(i)) m = 1.9; if (period === 'week' && [6, 7, 8].includes(i)) m = 1.7; return (0.6 * v + 0.4 / 12) * m; });
+    const sum = w.reduce((a, b) => a + b, 0); let acc = 0; H.cum = ORD.map(i => (acc += w[i] / sum));
+  }
+  const pick = p => { const k = H.cum.findIndex(v => v >= p); return ORD[k < 0 ? 11 : k]; };
+  const param = (x, y) => { const a = Math.atan2(y - 0.05, x) / 6.2832 + 0.5, r = Math.hypot(x, y - 0.05) / 1.2; return ((a * 0.75 + r * 0.35 + 0.08 * Math.sin(x * 6 + y * 4) + (Math.random() - 0.5) * 0.1) % 1 + 1) % 1; };
+  function build(W, Hh) {
+    const cols = Math.max(24, Math.round(W / 11)), cell = W / cols, rows = Math.round(Hh / cell), unit = 2.7 / cols, yTop = 0.08 + rows * unit / 2;
+    H.cell = cell; H.W = W; H.Hh = Hh; H.tiles = [];
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const x = (c + 0.5) * unit - 1.35, y = yTop - (r + 0.5) * unit, f = Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y;
+      if (f > 0) continue;
+      const ci = pick(param(x, y));
+      H.tiles.push({ px: (c + 0.5) * cell, py: (r + 0.5) * cell, x, y, ci, from: RGB[ci], to: RGB[ci], k: 1, f, hl: Math.exp(-(Math.pow(x + 0.5, 2) + Math.pow(y - 0.6, 2)) / 0.22), rim: 1 - Math.min(1, -f / 0.4),
+        delay: Math.hypot(x, y) / 1.3 * 0.9 + Math.random() * 0.9, ang: Math.random() * 6.283, ph: Math.random() * 40 });
+    }
+    document.getElementById('heart-count').innerText = `${H.tiles.length}개의 마음이 하트가 되었어요`;
+    H.built = true;
+  }
+  function recolor(tl, ci, delay) { const e = Math.max(0, Math.min(1, tl.k)); tl.from = tl.from.map((v, i) => v + (tl.to[i] - v) * e); tl.to = RGB[ci]; tl.ci = ci; tl.k = -(delay || 0); }
+  function reshuffle(period) { setWeights(period); H.tiles.forEach(tl => recolor(tl, pick(param(tl.x, tl.y)), Math.random() * 0.8)); }
+  document.querySelectorAll('.time-filter-btn').forEach(b => b.addEventListener('click', () => reshuffle(b.dataset.period || 'all')));
+  const near = (px, py) => { let b = null, bd = H.cell * 0.9; H.tiles.forEach(t => { const d = Math.hypot(t.px - px, t.py - py); if (d < bd) { bd = d; b = t; } }); return b; };
+  function showTip(t) {
+    if (!t) { tip.style.opacity = 0; return; }
+    tip.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:${SPEC[t.ci][1]}"></span>익명의 누군가 · ${SPEC[t.ci][2]}`;
+    tip.style.left = t.px + 'px'; tip.style.top = t.py + 'px'; tip.style.opacity = 1;
+  }
+  const pos = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * (H.W / r.width), (e.clientY - r.top) * (H.W / r.width)]; };
+  cv.addEventListener('pointermove', e => { [H.mx, H.my] = pos(e); showTip(near(H.mx, H.my)); });
+  cv.addEventListener('pointerleave', () => { H.mx = H.my = -999; showTip(null); });
+  cv.addEventListener('click', e => { const [x, y] = pos(e); H.rip.push({ x, y, a: 0 }); showTip(near(x, y)); });
+  const ease = k => { k = Math.max(0, Math.min(1, k)); return k * k * (3 - 2 * k); };
+  function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); ctx.fill(); }
+  setWeights('all');
+  function loop(ts) {
+    requestAnimationFrame(loop);
+    const rect = cv.getBoundingClientRect();
+    if (!rect.width || rect.bottom < 0 || rect.top > innerHeight) { H.vis = false; H.last = ts; return; }
+    const dt = Math.min(0.05, (ts - H.last) / 1000 || 0.016); H.last = ts;
+    if (!H.vis) { H.vis = true; H.t = reduce ? 10 : 0; }
+    H.t += dt; const t = H.t, W = cv.clientWidth, Hh = cv.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (!H.built || Math.abs(W - H.W) > 1 || Math.abs(Hh - H.Hh) > 1) { build(W, Hh); cv.width = W * dpr; cv.height = Hh * dpr; }
+    const ctx = cv.getContext('2d'), cx = W / 2, cy = Hh / 2;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, Hh);
+    const intro = Math.min(1, t / 2.2), pulse = 1 + 0.08 * Math.sin(t * 1.3);
+    const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.55 * pulse);
+    gl.addColorStop(0, `rgba(255,150,200,${0.4 * intro})`); gl.addColorStop(0.6, `rgba(190,170,255,${0.15 * intro})`); gl.addColorStop(1, 'rgba(255,170,205,0)');
+    ctx.fillStyle = gl; ctx.fillRect(0, 0, W, Hh);
+    if (!reduce && t > 2) { H.live -= dt; if (H.live <= 0) { H.live = 0.12; for (let n = 0; n < 2; n++) { const tl = H.tiles[Math.floor(Math.random() * H.tiles.length)]; recolor(tl, pick(Math.random()), 0); } } }
+    H.rip.forEach(r => r.a += dt); H.rip = H.rip.filter(r => r.a < 1.3);
+    const ph = (t % 2.6) / 2.6, beat = t < 2.6 || reduce ? 0 : Math.exp(-Math.pow((ph - 0.1) / 0.04, 2)) + 0.6 * Math.exp(-Math.pow((ph - 0.24) / 0.05, 2));
+    const b = 1 + 0.025 * beat, sz = H.cell - 1.2, sweep = reduce ? -9 : (t * 0.3) % 2.4 - 0.7, late = [];
+    const draw = (tl, sc, al, gx, gy, sp, g) => {
+      tl.k += dt / 0.9;
+      const e = ease(tl.k), c = tl.from.map((v, i) => v + (tl.to[i] - v) * e);
+      const rgb = c.map(v => Math.max(0, Math.min(255, Math.round((v * (1 - 0.32 * tl.hl) + 255 * 0.32 * tl.hl) * (1 - 0.1 * tl.rim)))));
+      ctx.setTransform(dpr * sc, 0, 0, dpr * sc, dpr * (cx + b * (gx - cx)), dpr * (cy + b * (gy - cy)));
+      ctx.globalAlpha = al; ctx.fillStyle = `rgb(${rgb})`; rr(ctx, -sz / 2, -sz / 2, sz, sz, sz * 0.36);
+      ctx.fillStyle = 'rgba(255,255,255,.34)'; rr(ctx, -sz * 0.36, -sz * 0.42, sz * 0.5, sz * 0.26, sz * 0.13);
+      const w = Math.min(0.8, sp * 0.55 + g * 0.5);
+      if (w > 0.03) { ctx.fillStyle = `rgba(255,255,255,${w})`; rr(ctx, -sz / 2, -sz / 2, sz, sz, sz * 0.36); }
+    };
+    H.tiles.forEach(tl => {
+      const x = Math.max(0, Math.min(1, (t - tl.delay) / 0.9)); if (x <= 0) return;
+      const e = 1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2), fly = (1 - e) * W * 0.7;
+      const gx = tl.px + Math.cos(tl.ang) * fly, gy = tl.py + Math.sin(tl.ang) * fly, al = Math.min(1, x * 2);
+      let s = Math.max(0.001, e), g = 0, sp = 0;
+      if (x >= 1 && !reduce) {
+        s *= 1 + 0.06 * Math.sin(t * 1.8 - (tl.px + tl.py) * 0.03);
+        g = Math.exp(-Math.pow(((tl.px / W) * 0.6 + (tl.py / Hh) * 0.4 - sweep) / 0.06, 2)); s *= 1 + 0.18 * g;
+        sp = Math.pow(Math.max(0, Math.sin(t * 1.1 + tl.ph)), 24);
+        const hd = Math.hypot(tl.px - H.mx, tl.py - H.my); if (hd < 70) s *= 1 + 0.75 * Math.pow(1 - hd / 70, 1.5);
+        H.rip.forEach(r => { const d = Math.hypot(tl.px - r.x, tl.py - r.y) - r.a * W * 0.6, w = Math.exp(-Math.pow(d / 22, 2)) * (1 - r.a / 1.3); s *= 1 + 0.6 * w; sp += w; });
+      }
+      s *= b;
+      if (s > 1.3) late.push([tl, s, al, gx, gy, sp, g]); else draw(tl, s / b, al, gx, gy, sp, g);
+    });
+    late.forEach(a => draw(a[0], a[1] / b, a[2], a[3], a[4], a[5], a[6]));
+    ctx.globalAlpha = 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (!reduce && t > 2.6) {
+      H.ps -= dt;
+      if (H.ps <= 0 && H.parts.length < 8) { H.ps = 0.9 + Math.random() * 0.8; H.parts.push({ x: cx + (Math.random() - 0.5) * W * 0.5, y: cy - Hh * 0.15, a: 0, c: SPEC[Math.floor(Math.random() * 12)][1], s: 10 + Math.random() * 9, ph: Math.random() * 6 }); }
+      H.parts.forEach(q => { q.a += dt; q.y -= 26 * dt; }); H.parts = H.parts.filter(q => q.a < 2.8);
+      H.parts.forEach(q => { ctx.globalAlpha = Math.sin(Math.min(1, q.a / 2.8) * Math.PI) * 0.9; ctx.fillStyle = q.c; ctx.font = `${q.s}px sans-serif`; ctx.fillText('♥', q.x + Math.sin(q.a * 2 + q.ph) * 9, q.y); });
+      ctx.globalAlpha = 1;
+    }
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>
+(function () {
+  const MAP = { peach: '#FFAAA5', tangerine: '#FFB347', mint: '#A8E6CF', pink: '#FF9EBB', golden: '#FFD97A', sky: '#87CEEB', fog: '#B4B4BC', lavender: '#DCD0FF', indigo: '#5D5D81', lilac: '#B8A0D8', crimson: '#E8607A', clay: '#D9BFA3' };
+  const bd = document.getElementById('mood-backdrop'), cards = document.querySelectorAll('.emotion-card');
+  const rgb = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16));
+  const light = (h, f) => '#' + rgb(h).map(v => Math.round(v + (255 - v) * f).toString(16).padStart(2, '0')).join('');
+  const lum = h => { const c = rgb(h); return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255; };
+  for (let i = 0; i < 9; i++) {
+    const b = document.createElement('div'), sz = 40 + Math.random() * 90;
+    b.className = 'mb'; b.style.cssText = `left:${Math.random() * 96}%;width:${sz}px;height:${sz}px;animation-duration:${14 + Math.random() * 14}s;animation-delay:${-Math.random() * 20}s`;
+    bd.appendChild(b);
+  }
+  function cardGradient(hex, on) {
+    const l = light(hex, on ? 0.3 : 0.46), d = on ? hex : light(hex, 0.12);
+    return `linear-gradient(150deg, ${l} 0%, ${d} 72%, ${hex} 100%)`;
+  }
+  function paintCards() {
+    cards.forEach(c => {
+      const hex = MAP[c.dataset.emotionId]; if (!hex) return;
+      const on = c.classList.contains('is-active');
+      c.style.background = cardGradient(hex, on);
+      c.classList.toggle('tinted-dark', lum(hex) < (on ? 0.6 : 0.5));
+    });
+  }
+  function tint(id) {
+    const hex = MAP[id]; if (!hex) return;
+    bd.style.setProperty('--mc', hex); bd.style.setProperty('--mc2', light(hex, 0.55));
+    cards.forEach(c => c.classList.toggle('is-active', c.dataset.emotionId === id));
+    paintCards();
+  }
+  cards.forEach(c => c.addEventListener('click', () => tint(c.dataset.emotionId)));
+  paintCards();
+  const act = document.querySelector('.emotion-card.is-active'); if (act) tint(act.dataset.emotionId);
+
+  // 직접 쓰는 해시태그 (1개)
+  const box = document.getElementById('hashtag-container'), counter = document.getElementById('tag-counter');
+  const SEL = ['is-selected', 'bg-secondary-container', 'text-on-secondary-container', 'font-semibold', 'shadow-sm'];
+  const wrap = document.createElement('label');
+  wrap.className = 'custom-tag inline-flex items-center gap-1 px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all duration-200 border border-dashed border-secondary text-secondary';
+  wrap.innerHTML = '<span class="material-symbols-outlined text-[16px] icon">edit</span><span class="hash" style="display:none">#</span><input type="text" maxlength="12" placeholder="직접 쓰기" class="bg-transparent outline-none" style="width:5.5rem" />';
+  box.appendChild(wrap);
+  box.insertAdjacentHTML('afterend', '<p class="font-label-sm text-label-sm text-on-surface-variant">✎ 나만의 태그를 한 개 직접 써볼 수 있어요 (최대 12자, 글자를 쓰고 Enter)</p>');
+  const input = wrap.querySelector('input'), hash = wrap.querySelector('.hash'), icon = wrap.querySelector('.icon');
+  const count = () => document.querySelectorAll('.tag-chip.is-selected').length;
+  const refresh = () => { counter.textContent = `선택됨 ${count()} / 3`; };
+  function setSel(on) {
+    if (on) { wrap.classList.add(...SEL); wrap.classList.remove('border-dashed', 'border', 'border-secondary', 'text-secondary', 'bg-surface-container', 'text-on-surface-variant'); }
+    else { wrap.classList.remove(...SEL); wrap.classList.add('bg-surface-container', 'text-on-surface-variant'); }
+  }
+  function commit() {
+    const v = input.value.replace(/[#\s]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 12); input.value = v;
+    if (!v) { wrap.classList.remove('tag-chip', 'bg-surface-container', 'text-on-surface-variant'); setSel(false); wrap.classList.remove('bg-surface-container', 'text-on-surface-variant'); wrap.classList.add('border', 'border-dashed', 'border-secondary', 'text-secondary'); hash.style.display = 'none'; icon.style.display = ''; delete wrap.dataset.tag; refresh(); return; }
+    wrap.classList.add('tag-chip'); wrap.dataset.tag = v; hash.style.display = ''; icon.style.display = 'none'; input.style.width = Math.max(3, v.length * 1.05 + 0.6) + 'rem';
+    if (!wrap.classList.contains('is-selected')) {
+      if (count() >= 3) { setSel(false); counter.classList.add('animate-pulse'); setTimeout(() => counter.classList.remove('animate-pulse'), 600); }
+      else setSel(true);
+    }
+    refresh();
+  }
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } });
+  input.addEventListener('blur', commit);
+  wrap.addEventListener('click', e => {
+    if (e.target === input || !wrap.dataset.tag) return; e.preventDefault();
+    if (wrap.classList.contains('is-selected')) setSel(false);
+    else if (count() < 3) setSel(true);
+    else { counter.classList.add('animate-pulse'); setTimeout(() => counter.classList.remove('animate-pulse'), 600); }
+    refresh();
+  });
+})();
+</script>
+<script>
+(function () {
+  const ocean = window.ocean = { cards: [], crowd: [], W: 0, H: 0, asp: 1, t: 0, last: 0, spawn: 0, sel: null, cur: null, target: null, uid: 0 };
+  const vp = document.getElementById('ocean-viewport'), cv = document.getElementById('ocean-canvas'), layer = document.getElementById('ocean-surface-canvas');
+  const lanes = [-0.55, 0.15, 0.6, -0.2, 0.38, -0.7, 0.75];
+  const hexMap = { coral: '#FFAAA5', navy: '#5D5D81', grey: '#B4B4BC', mint: '#A8E6CF', lavender: '#DCD0FF', yellow: '#FFD3B6', red: '#FF6B6B', pink: '#FF9EBB', skyblue: '#87CEEB', purple: '#9B59B6', orange: '#FFB347', beige: '#E8D5C4' };
+  const rgbMap = {}; Object.keys(hexMap).forEach(k => { const h = hexMap[k]; rgbMap[k] = [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16)); });
+  const moodKeys = Object.keys(hexMap);
+  const orbMsgs = [
+    { c: 'grey', i: '☁️', g: ['#야근', '#번아웃'], t: '퇴근길 지하철에서 멍하니 창밖만 봤어요.' },
+    { c: 'mint', i: '🌿', g: ['#꿀잠'], t: '주말 낮잠 최고였다. 아무 생각 없이 푹 잤어요.' },
+    { c: 'coral', i: '🍲', g: ['#소확행', '#맛있는한끼'], t: '점심에 먹은 김치찌개 덕분에 하루가 괜찮아졌어요.' },
+    { c: 'navy', i: '🌙', g: ['#새벽감성'], t: '잠이 안 와서 창문 열고 조용히 앉아 있어요.' },
+    { c: 'lavender', i: '💭', g: ['#생각이많은밤'], t: '내일 발표 생각에 마음이 자꾸 두근거려요.' },
+    { c: 'pink', i: '💗', g: ['#인간관계'], t: '오랜만에 연락 온 친구 덕분에 마음이 말랑해졌어요.' },
+    { c: 'red', i: '🔥', g: ['#팀장님_밉다'], t: '오늘 회의에서 또 말이 바뀌었다... 심호흡 중.' },
+    { c: 'purple', i: '🌧️', g: ['#위로가필요해'], t: '이유 없이 눈물이 났지만 괜찮아지려고 노력 중이에요.' },
+    { c: 'skyblue', i: '🌤️', g: ['#맑은하늘'], t: '하늘이 너무 맑아서 괜히 기분이 가벼워졌어요.' },
+    { c: 'orange', i: '🏃', g: ['#운동완료'], t: '러닝 5km 완료! 내일의 나야, 고마워.' },
+    { c: 'yellow', i: '✨', g: ['#성취감'], t: '미뤄둔 일을 드디어 끝냈다!' },
+    { c: 'beige', i: '🍞', g: ['#그냥'], t: '특별할 것 없는 하루. 그래서 좋은 하루.' },
+    { c: 'grey', i: '😪', g: ['#월요병'], t: '월요일은 왜 이렇게 길까요.' },
+    { c: 'mint', i: '🍵', g: ['#비오는날', '#소확행'], t: '빗소리 들으면서 마신 따뜻한 차 한 잔.' }
+  ];
+  const times = ['방금 전', '5분 전', '30분 전', '1시간 전', '2시간 전'];
+  const THEMES = {
+    sunrise: { sky: [[190, 214, 242], [250, 216, 214], [255, 230, 186]], sun: [255, 244, 205], glow: [255, 214, 150], sunX: 0.3, sunY: 0.9, sunR: 26, cloud: [255, 255, 255], cloudA: 0.6, island: [200, 170, 190], star: 0, w: [[243, 226, 208], [142, 197, 220], [47, 120, 168]], crest: [255, 255, 255], glit: [255, 240, 200], haze: [255, 236, 214], hazeA: 0.6, vig: [15, 55, 105], night: 0 },
+    sunset: { sky: [[185, 166, 216], [242, 184, 184], [255, 214, 168]], sun: [255, 230, 190], glow: [255, 190, 140], sunX: 0.68, sunY: 0.88, sunR: 26, cloud: [255, 255, 255], cloudA: 0.5, island: [150, 130, 180], star: 0, w: [[242, 214, 212], [154, 179, 214], [46, 92, 147]], crest: [255, 255, 255], glit: [255, 226, 190], haze: [250, 224, 226], hazeA: 0.6, vig: [30, 40, 100], night: 0 },
+    midnight: { sky: [[14, 22, 58], [36, 52, 104], [91, 111, 168]], sun: [246, 243, 228], glow: [170, 190, 255], sunX: 0.74, sunY: 0.4, sunR: 19, cloud: [120, 135, 190], cloudA: 0.25, island: [30, 40, 80], star: 1, w: [[58, 76, 134], [31, 58, 110], [11, 27, 63]], crest: [190, 210, 255], glit: [225, 235, 255], haze: [90, 110, 170], hazeA: 0.45, vig: [2, 8, 30], night: 1 }
+  };
+  const STARS = Array.from({ length: 70 }, (_, i) => ({ x: Math.sin(i * 91.7) * 0.5 + 0.5, y: (Math.sin(i * 37.3 + 1) * 0.5 + 0.5) * 0.8, r: 0.6 + ((i * 7) % 5) * 0.25, p: i }));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const smooth = (a, b, x) => { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
+  const persp = z => 0.12 + 0.88 * z;
+  const C = (a, al) => al == null ? `rgb(${a.map(Math.round)})` : `rgba(${a.map(Math.round)},${al})`;
+  const mixDeep = (a, b, f) => Array.isArray(a) ? a.map((v, i) => mixDeep(v, b[i], f)) : a + (b - a) * f;
+  window.oceanApplyTheme = name => { ocean.target = THEMES[name] || THEMES.midnight; if (!ocean.cur) ocean.cur = JSON.parse(JSON.stringify(ocean.target)); };
+  function rowColor(z, shade, w) {
+    const i = z < 0.45 ? 0 : 1, z0 = i ? 0.45 : 0, z1 = i ? 1 : 0.45, f = (z - z0) / (z1 - z0);
+    return C([0, 1, 2].map(j => (w[i][j] + (w[i + 1][j] - w[i][j]) * f) * (1 + shade)));
+  }
+  function surfY(xs, z, t, H, hy) {
+    const zz = Math.pow(z, 1.7), f = 26 - 18 * z, s = H / 500;
+    const h = 0.6 * Math.sin(xs * f + zz * 30 + t * 1.1) + 0.3 * Math.sin(xs * f * 0.6 - zz * 18 + t * 0.7 + 2) + 0.1 * Math.sin(xs * f * 2.3 + zz * 45 + t * 1.8);
+    return { y: hy + (H - hy) * zz - (1.5 + 15 * Math.pow(z, 1.3)) * s * h + 4 * s * z * Math.sin(t * 0.6 + zz * 3), h };
+  }
+  function spawnOrb(z) {
+    const k = Math.floor(Math.random() * orbMsgs.length), m = orbMsgs[k];
+    ocean.crowd.push({ z, u: Math.random() * 1.9 - 0.95, color: m.c, m, time: times[Math.floor(Math.random() * times.length)], size: 0.8 + Math.random() * 0.6, speed: 0.022 + Math.random() * 0.016, seed: Math.random() * 6.28 });
+  }
+  function registerBottle(el, id, z, u, once) {
+    const c = { el, id, z, u, once: !!once, pause: false, rot: 0, seed: Math.random() * 6.28, color: moodKeys[Math.floor(Math.random() * 12)], t: 0, w: el.offsetWidth || 224, h: el.offsetHeight || 170 };
+    el.style.pointerEvents = 'auto'; el.style.transformOrigin = '50% 100%'; el.style.filter = 'drop-shadow(0 10px 12px rgba(10,20,60,.35))';
+    el.addEventListener('pointerenter', () => c.pause = true);
+    el.addEventListener('pointerleave', () => c.pause = false);
+    el.addEventListener('pointerdown', () => { c.pause = true; clearTimeout(c.t); c.t = setTimeout(() => c.pause = false, 2500); });
+    ocean.cards.push(c);
+  }
+  let resizeMeasureT = null;
+  window.addEventListener('resize', () => { clearTimeout(resizeMeasureT); resizeMeasureT = setTimeout(() => { ocean.cards.forEach(c => { c.w = c.el.offsetWidth || c.w; c.h = c.el.offsetHeight || c.h; }); }, 150); });
+  document.querySelectorAll('[id^="bottle-"]').forEach((el, i) => registerBottle(el, i + 1, 0.8 - i * 0.13, lanes[i % lanes.length], false));
+  window.oceanAddBottle = (emoji, text) => {
+    const id = 'u' + (++ocean.uid);
+    storyData[id] = { icon: emoji, time: '방금 전 표류', tag: '#방금 #나의마음', content: text, comfort: 0, pat: 0, cheer: 0 };
+    const el = document.createElement('div');
+    el.className = 'group absolute left-0 top-0 cursor-pointer will-change-transform';
+    el.innerHTML = `<div class="flex flex-col items-center"><div class="w-10 h-10 rounded-full bg-surface/80 backdrop-blur-lg flex items-center justify-center shadow-lg ring-2 ring-white/80"><span class="text-xl"></span></div>
+      <div class="mt-2 w-56 p-space-md rounded-lg bg-surface/90 backdrop-blur-xl shadow-lg ring-2 ring-white/70"><div class="flex items-center justify-between gap-space-xs mb-1"><span class="font-label-sm text-label-sm text-primary font-semibold">방금 전 표류</span><span class="font-label-sm text-label-sm text-on-surface-variant">#나의마음</span></div>
+      <p class="font-body-sm text-body-sm text-on-surface line-clamp-2 leading-snug"></p></div></div>`;
+    el.querySelector('span.text-xl').textContent = emoji; el.querySelector('p').textContent = text;
+    el.onclick = () => openStoryModal(id);
+    layer.appendChild(el);
+    registerBottle(el, id, 0.86, 0.02, true);
+  };
+  function openOrb(o) {
+    if (!o.sid) { o.sid = 'c' + (++ocean.uid); const r = () => 20 + Math.floor(Math.random() * 300);
+      storyData[o.sid] = { icon: o.m.i, time: o.time + ' 표류', tag: o.m.g.join(' '), content: o.m.t, comfort: r(), pat: r(), cheer: r() }; }
+    ocean.sel = o; openStoryModal(o.sid);
+  }
+  function hit(e) {
+    const r = vp.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top; let best = null, bd = 1e9;
+    ocean.crowd.forEach(o => { if (o.hr == null || o.z < 0.1) return; const d = Math.hypot(px - o.hx, py - o.hy2) - Math.max(o.hr * 1.5, 16); if (d < 0 && d < bd) { bd = d; best = o; } });
+    return best;
+  }
+  vp.addEventListener('click', e => { if (e.target.closest('.group, #ocean-viewport > .z-10')) return; const o = hit(e); if (o) openOrb(o); });
+  vp.addEventListener('pointermove', e => { vp.style.cursor = (!e.target.closest('.group') && hit(e)) ? 'pointer' : ''; });
+
+  const oceanCtx = cv.getContext('2d');
+  function loop(ts) {
+    requestAnimationFrame(loop);
+    if (!ocean.cur) return;
+    const dt = Math.min(0.05, (ts - ocean.last) / 1000 || 0.016); ocean.last = ts;
+    const W = vp.clientWidth, H = vp.clientHeight; if (!W || !H) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (W !== ocean.W || H !== ocean.H) { ocean.W = W; ocean.H = H; ocean.asp = Math.max(1, W / H * 0.85); cv.width = W * dpr; cv.height = H * dpr; }
+    const asp = ocean.asp, xsOf = x => (x - W / 2) / (W / 2) * asp;
+    const k = reduceMotion ? 0.3 : 1; ocean.t += dt * k; const t = ocean.t;
+    for (const key in ocean.target) ocean.cur[key] = mixDeep(ocean.cur[key], ocean.target[key], Math.min(1, dt * 2.2));
+    const T = ocean.cur, night = T.night, ctx = oceanCtx;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    const hy = H * 0.36, N = 46, s = H / 500, maxOrb = Math.round(30 + W / 45);
+
+    if (!ocean.crowd.length) for (let i = 0; i < maxOrb - 14; i++) spawnOrb(0.08 + Math.random() * 0.87);
+    ocean.spawn -= dt * k;
+    if (ocean.spawn <= 0 && ocean.crowd.length < maxOrb) { spawnOrb(0.93 + Math.random() * 0.04); ocean.spawn = 0.6 + Math.random() * 1.0; }
+    ocean.crowd.forEach(o => { if (o !== ocean.sel) o.z -= o.speed * dt * k; });
+    ocean.crowd = ocean.crowd.filter(o => o.z > 0.02 || o === ocean.sel);
+    ocean.cards.forEach(c => { if (!c.pause && c !== ocean.sel) c.z -= 0.028 * dt * k; if (c.z < 0.03) { if (c.once) { c.dead = true; c.el.remove(); } else { c.z = 0.84; c.u = lanes[Math.floor(Math.random() * lanes.length)]; } } });
+    ocean.cards = ocean.cards.filter(c => !c.dead);
+
+    const sky = ctx.createLinearGradient(0, 0, 0, hy);
+    sky.addColorStop(0, C(T.sky[0])); sky.addColorStop(0.6, C(T.sky[1])); sky.addColorStop(1, C(T.sky[2]));
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, hy + 2);
+    if (T.star > 0.02) STARS.forEach(st => { ctx.fillStyle = `rgba(255,255,240,${T.star * (0.35 + 0.65 * Math.abs(Math.sin(t * 1.5 + st.p)))})`; ctx.beginPath(); ctx.arc(st.x * W, st.y * hy, st.r, 0, 6.283); ctx.fill(); });
+    const sx = W * T.sunX, sy = hy * T.sunY, pulse = 1 + 0.03 * Math.sin(t * 0.8), sr = T.sunR * pulse * Math.max(1, s);
+    const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 190 * pulse * Math.max(1, s));
+    glow.addColorStop(0, C(T.glow, 0.95 - 0.4 * night)); glow.addColorStop(0.3, C(T.glow, 0.45 - 0.2 * night)); glow.addColorStop(1, C(T.glow, 0));
+    ctx.fillStyle = glow; ctx.fillRect(0, 0, W, hy + 2);
+    ctx.fillStyle = C(T.sun); ctx.beginPath(); ctx.arc(sx, sy, sr, 0, 6.283); ctx.fill();
+    if (night > 0.05) { ctx.fillStyle = `rgba(150,160,190,${0.2 * night})`; [[-6, -4, 5], [5, 5, 4], [4, -8, 3]].forEach(([dx, dy, r]) => { ctx.beginPath(); ctx.arc(sx + dx * s, sy + dy * s, r * s, 0, 6.283); ctx.fill(); }); }
+    ctx.fillStyle = C(T.cloud, T.cloudA);
+    const nc = Math.max(3, Math.round(W / 260));
+    for (let i = 0; i < nc; i++) {
+      const L = W + 200, cx = ((i * (W / nc) + 60 - t * (5 + (i % 3) * 2)) % L + L) % L - 100, cy = hy * (0.14 + (i % 3) * 0.2);
+      [[0, 0, 22], [24, 5, 17], [-24, 6, 15]].forEach(([dx, dy, r]) => { ctx.beginPath(); ctx.ellipse(cx + dx * s, cy + dy * s, r * s * 1.5, r * s * 0.7, 0, 0, 6.283); ctx.fill(); });
+    }
+    ctx.fillStyle = C(T.island, 0.45); ctx.beginPath(); ctx.moveTo(W * 0.02, hy + 1); ctx.quadraticCurveTo(W * 0.14, hy - 22 * s, W * 0.3, hy + 1); ctx.fill();
+    const wg = ctx.createLinearGradient(0, hy, 0, H);
+    wg.addColorStop(0, C(T.w[0])); wg.addColorStop(0.35, C(T.w[1])); wg.addColorStop(1, C(T.w[2]));
+    ctx.fillStyle = wg; ctx.fillRect(0, hy, W, H - hy);
+
+    const items = ocean.crowd.map(o => ({ z: o.z, o })).concat(ocean.cards.map(c => ({ z: c.z, o: c, ripple: true }))).sort((a, b) => a.z - b.z);
+    let ii = 0;
+    for (let i = 0; i < N; i++) {
+      const z = (i + 1) / N, zp = Math.pow(i / N, 1.7), zz = Math.pow(z, 1.7), sp = (H - hy) * (zz - zp);
+      const bottom = i === N - 1 ? H : Math.min(H, hy + (H - hy) * zz + sp * 2 + 24 * s);
+      const step = 8, xs0 = [], ys0 = [], hs = [];
+      for (let x = 0; x <= W + step; x += step) { const r = surfY(xsOf(x), z, t, H, hy); xs0.push(x); ys0.push(r.y); hs.push(r.h); }
+      ctx.beginPath(); ctx.moveTo(0, bottom); xs0.forEach((x, j) => ctx.lineTo(x, ys0[j])); ctx.lineTo(W + step, bottom); ctx.closePath();
+      ctx.fillStyle = rowColor(z, (i % 2 ? 0.035 : -0.02), T.w); ctx.fill();
+      ctx.lineWidth = 0.6 + 1.6 * z; ctx.lineCap = 'round';
+      for (let j = 1; j < xs0.length; j++) {
+        const h = hs[j];
+        if (h > 0.3) { ctx.strokeStyle = C(T.crest, Math.min(0.6, (h - 0.3) * 0.9) * (0.25 + 0.75 * z) * (1 - 0.35 * night)); ctx.beginPath(); ctx.moveTo(xs0[j - 1], ys0[j - 1]); ctx.lineTo(xs0[j], ys0[j]); ctx.stroke(); }
+        if (z > 0.62 && h > 0.82) { ctx.fillStyle = C(T.crest, 0.5 * (h - 0.8) * 4 * (1 - 0.35 * night)); ctx.beginPath(); ctx.ellipse(xs0[j], ys0[j] + 1, 3 + 5 * z, 1 + 1.5 * z, 0, 0, 6.283); ctx.fill(); }
+      }
+      if (z > 0.05 && z < 0.75) for (let q = 0; q < 5; q++) {
+        const gx = sx + Math.sin(i * 12.9 + q * 7.1 + t * 0.9) * (14 + 110 * z), w = (2 + 12 * z) * (0.5 + 0.5 * Math.sin(t * 3 + i + q)), gy = surfY(xsOf(gx), z, t, H, hy).y;
+        ctx.fillStyle = C(T.glit, 0.65 - z * 0.5); ctx.fillRect(gx - w / 2, gy - 1, w, 1.4 + 1.2 * z);
+      }
+      while (ii < items.length && items[ii].z <= z) {
+        const it = items[ii++], o = it.o, zo = o.z, x = W / 2 + o.u * W * 0.5 * persp(zo), y = surfY(xsOf(x), zo, t, H, hy).y, al = smooth(0.02, 0.2, zo);
+        if (it.ripple) {
+          const rw = 110 * (0.04 + 0.725 * zo), rp = (t * 0.6 + o.seed) % 1, rc = rgbMap[o.color];
+          ctx.strokeStyle = `rgba(255,255,255,${0.5 * al * (1 - rp)})`; ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.ellipse(x, y, rw * (0.8 + rp * 0.7), rw * 0.16 * (0.8 + rp * 0.7), 0, 0, 6.283); ctx.stroke();
+          ctx.fillStyle = `rgba(${rc},${0.28 * al})`; ctx.beginPath(); ctx.ellipse(x, y + 2, rw * 0.9, rw * 0.14, 0, 0, 6.283); ctx.fill();
+          continue;
+        }
+        const r = (3 + 13 * zo) * o.size * Math.max(1, s), bob = Math.sin(t * 1.3 + o.seed) * r * 0.12, cy = y - r * 2.05 + bob;
+        const rc = rgbMap[o.color], hzf = (1 - zo) * 0.45 * (1 - 0.6 * night), col = [0, 1, 2].map(j => Math.round(rc[j] + (T.haze[j] - rc[j]) * hzf)).join(',');
+        o.hx = x; o.hy2 = cy; o.hr = r; ctx.globalAlpha = al * (0.6 + 0.4 * zo);
+        const gr = r * 2.2 * (1 + 0.4 * night), gl = ctx.createRadialGradient(x, cy, 0, x, cy, gr);
+        gl.addColorStop(0, `rgba(${col},${0.4 + 0.3 * night})`); gl.addColorStop(1, `rgba(${col},0)`);
+        ctx.fillStyle = gl; ctx.beginPath(); ctx.arc(x, cy, gr, 0, 6.283); ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, cy + r * 1.1); ctx.quadraticCurveTo(x + Math.sin(t * 2 + o.seed) * r * 0.5, (cy + r * 1.1 + y) / 2, x, y); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(x, y, r * 1.2, r * 0.26, 0, 0, 6.283); ctx.stroke();
+        ctx.fillStyle = `rgb(${col})`; ctx.beginPath(); ctx.ellipse(x, cy, r * 0.88, r * 1.05, 0, 0, 6.283); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(x, cy + r); ctx.lineTo(x - r * 0.18, cy + r * 1.22); ctx.lineTo(x + r * 0.18, cy + r * 1.22); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.beginPath(); ctx.ellipse(x - r * 0.3, cy - r * 0.4, r * 0.2, r * 0.32, -0.5, 0, 6.283); ctx.fill();
+        if (o === ocean.sel) { ctx.strokeStyle = `rgba(255,255,255,${0.7 + 0.3 * Math.sin(t * 5)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(x, cy, r * 1.3, r * 1.5, 0, 0, 6.283); ctx.stroke(); }
+        ctx.globalAlpha = 1;
+      }
+    }
+    const hz = ctx.createLinearGradient(0, hy, 0, hy + (H - hy) * 0.3);
+    hz.addColorStop(0, C(T.haze, T.hazeA)); hz.addColorStop(1, C(T.haze, 0)); ctx.fillStyle = hz; ctx.fillRect(0, hy, W, (H - hy) * 0.3);
+    const vg = ctx.createLinearGradient(0, H * 0.8, 0, H); vg.addColorStop(0, C(T.vig, 0)); vg.addColorStop(1, C(T.vig, 0.28)); ctx.fillStyle = vg; ctx.fillRect(0, H * 0.8, W, H * 0.2);
+
+    // 감정 병(카드): 파도 높이·기울기를 따라 떠내려가며 수평선으로 멀어짐
+    ocean.cards.forEach(c => {
+      const z = c.z, x = W / 2 + c.u * W * 0.5 * persp(z) + 4 * Math.sin(t * 0.5 + c.seed), xs = xsOf(x), y = surfY(xs, z, t, H, hy).y;
+      const sl = (surfY(xs + 0.06, z, t, H, hy).y - surfY(xs - 0.06, z, t, H, hy).y) / (0.12 * (W / 2) / asp);
+      c.rot += (Math.max(-0.25, Math.min(0.25, Math.atan(sl) * 0.8)) - c.rot) * Math.min(1, dt * 6);
+      const sc = 0.04 + 0.725 * z, w = c.w, h = c.h;
+      c.el.style.opacity = smooth(0.03, 0.22, z); c.el.style.zIndex = Math.round(z * 100);
+      c.el.style.pointerEvents = sc > 0.35 ? 'auto' : 'none';
+      c.el.style.transform = `translate3d(${x - w / 2}px, ${y - h + 6 * sc}px, 0) rotate(${c.rot}rad) scale(${sc})`;
+    });
+  }
+  window.oceanApplyTheme('midnight');
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>
+(function () {
+  const pages = { home: document.getElementById('page-home'), record: document.getElementById('page-record'), wave: document.getElementById('page-wave'), report: document.getElementById('page-report') };
+  const links = document.querySelectorAll('nav a[data-path]');
+  function go(path) {
+    if (!pages[path]) return;
+    const next = pages[path];
+    if (!next.classList.contains('hidden')) return;
+    const cur = Object.values(pages).find(p => !p.classList.contains('hidden'));
+    const finish = () => {
+      Object.values(pages).forEach(p => p.classList.add('hidden'));
+      next.classList.remove('hidden');
+      next.style.opacity = '0'; next.style.transform = 'translateY(10px)';
+      requestAnimationFrame(() => requestAnimationFrame(() => { next.style.opacity = '1'; next.style.transform = 'translateY(0)'; }));
+      const mb = document.getElementById('mood-backdrop');
+      if (mb) mb.style.display = (path === 'record') ? '' : 'none';
+      links.forEach(a => {
+        const on = a.dataset.path === path;
+        a.classList.toggle('bg-secondary-container', on);
+        a.classList.toggle('text-on-secondary-container', on);
+        a.classList.toggle('font-semibold', on);
+        a.classList.toggle('rounded-full', on);
+        a.classList.toggle('text-on-surface-variant', !on);
+        if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+    if (cur) { cur.style.opacity = '0'; cur.style.transform = 'translateY(-8px)'; setTimeout(finish, 180); }
+    else finish();
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-path]');
+    if (!a) return;
+    e.preventDefault();
+    go(a.dataset.path);
+  });
+  go('home');
+
+  // 배경 블롭 패럴랙스
+  const bgBlobs = document.getElementById('bg-blobs');
+  const reduceMotionBg = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (bgBlobs && !reduceMotionBg) {
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    (function loop() { tx += (cx - tx) * 0.06; ty += (cy - ty) * 0.06; bgBlobs.style.transform = `translate(${tx}px, ${ty}px)`; requestAnimationFrame(loop); })();
+    window.addEventListener('pointermove', e => {
+      cx = -((e.clientX / window.innerWidth) - 0.5) * 30;
+      cy = -((e.clientY / window.innerHeight) - 0.5) * 30;
+    });
+  }
+})();
+</script>
+</body></html>
